@@ -228,103 +228,107 @@ class _ScanScreenState extends State<ScanScreen> {
 
           // High Contrast Framing Guide & Overlay
           SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                // Stability Indicator Bar
-                _buildStabilityMeter(),
-                const Spacer(),
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 12),
+                  // Stability Indicator Bar
+                  _buildStabilityMeter(),
+                  const SizedBox(height: 16),
 
-                // Bounding Box Reticle
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  height: MediaQuery.of(context).size.width * 0.55,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: _motionController.isSteady
-                          ? const Color(0xFF10B981)
-                          : const Color(0xFFF59E0B),
-                      width: 4,
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      color: Colors.black54,
-                      child: Text(
-                        _motionController.isSteady
-                            ? '✓ HOLD STEADY — Ready to Scan'
-                            : '⚡ Hold strip still inside frame',
-                        style: TextStyle(
-                          color: _motionController.isSteady
-                              ? const Color(0xFF10B981)
-                              : Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                const Spacer(),
-
-                // Burst Capture Progress Overlay
-                if (_burstController.isCapturing)
+                  // Bounding Box Reticle
                   Container(
-                    padding: const EdgeInsets.all(16),
-                    margin: const EdgeInsets.symmetric(horizontal: 32),
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    height: 200,
                     decoration: BoxDecoration(
-                      color: Colors.black87,
-                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: _motionController.isSteady
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFFF59E0B),
+                        width: 4,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Capturing Burst Frames...',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    child: Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        color: Colors.black54,
+                        child: Text(
+                          _motionController.isSteady
+                              ? '✓ HOLD STEADY — Ready to Scan'
+                              : '⚡ Hold strip still inside frame',
+                          style: TextStyle(
+                            color: _motionController.isSteady
+                                ? const Color(0xFF10B981)
+                                : Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        LinearProgressIndicator(
-                          value: _burstController.progress,
-                          backgroundColor: Colors.white24,
-                          color: const Color(0xFF10B981),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${_burstController.capturedCount} / ${_burstController.totalFrames} frames',
-                          style: const TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                const SizedBox(height: 16),
-
-                // Large Elderly-Friendly Shutter Button
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 32.0),
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _motionController.isSteady
-                          ? const Color(0xFF10B981)
-                          : const Color(0xFF1E6FE8),
-                      minimumSize: const Size(260, 64),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
                       ),
                     ),
-                    onPressed: _triggerScan,
-                    icon: const Icon(Icons.camera, size: 36),
-                    label: const Text(
-                      'SCAN MEDICINE',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Burst Capture Progress Overlay
+                  if (_burstController.isCapturing)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.symmetric(horizontal: 32),
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Capturing Burst Frames...',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          LinearProgressIndicator(
+                            value: _burstController.progress,
+                            backgroundColor: Colors.white24,
+                            color: const Color(0xFF10B981),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${_burstController.capturedCount} / ${_burstController.totalFrames} frames',
+                            style: const TextStyle(color: Colors.white70, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  const SizedBox(height: 16),
+
+                  // Large Elderly-Friendly Shutter Button
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _motionController.isSteady
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFF1E6FE8),
+                        minimumSize: const Size(260, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                      ),
+                      onPressed: _triggerScan,
+                      icon: const Icon(Icons.camera, size: 36),
+                      label: const Text(
+                        'SCAN MEDICINE',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
