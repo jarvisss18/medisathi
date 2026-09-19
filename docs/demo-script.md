@@ -1,42 +1,44 @@
-# MediSathi — 3-Minute Demo Video Script (CODEX 2026 Round 2)
+# MediSathi Mobile MVP — CODEX 2026 Hackathon Demo Script
 
-**Persona:** Mrs. Sunanda Patil, 72, Panvel. Takes 6 daily medications. Son Rahul is caregiver.
+**Persona:** Mrs. Sunanda Patil (68 years old, Pune, Maharashtra)  
+**Caregiver:** Rahul Patil (Son, living in Mumbai)  
+**Duration:** 3 Minutes  
+**Core Motto:** *"When MediSathi is not sure, it does not guess."*
 
 ---
 
-## Demo Script Timeline
+## Act 1: The Problem & Persona (0:00 - 0:30)
 
-### 1. Introduction & Context (0:00 - 0:20)
-- **Visual:** Open MediSathi App Home Screen showing "Namaste Mrs. Sunanda Patil" and Today's Doses card.
-- **Narrative:** "Mrs. Patil is 72 and takes six daily medications. Because many medicine strips look nearly identical in shape and color, she risks taking the wrong dose or confusing medicines. Here is how MediSathi helps her stay safe."
+* **Presenter:** "Namaste Judges! Meet Mrs. Sunanda Patil, 68, from Pune. She takes 6 daily medicines for blood pressure, diabetes, and cholesterol. With age-related presbyopia and small Marathi/English foil text, reading 5 mg versus 10 mg is dangerous."
+* **Presenter:** "Existing AI apps often guess or hallucinate when text is blurry. In healthcare, a false guess can be fatal. MediSathi is built on a strict, deterministic, offline-first safety rule: **If confidence or quality falls below safety thresholds, MediSathi NEVER guesses.**"
 
-### 2. Scanning & Verification (0:20 - 0:50)
-- **Visual:** Tap "Scan Medicine". Place Amlodipine 5mg strip in frame. Green steadiness ring turns solid green. Multi-frame burst captures 3 images.
-- **Result:** Screen transitions to **"Medicine Verified"** (Green Check, Amlodipine 5mg, Signals Checklist: Name matched, Strength 5mg matched, Pack shade verified).
-- **TTS Audio:** App speaks: *"Amlodipine 5 mg verified. Take 1 tablet daily after food."*
+---
 
-### 3. Interaction Warning Check (0:50 - 1:15)
-- **Visual:** Scan an OTC painkiller (Ibuprofen 400mg) while Aspirin 75mg is saved in My Medicines.
-- **Result:** Warning screen appears in Amber/Red: *"Potential Interaction Detected — Ibuprofen + Aspirin. Ibuprofen may reduce the protective effect of low-dose aspirin and increase stomach bleeding risk. Please consult your doctor or pharmacist."*
+## Act 2: High-Confidence Scan & Multilingual TTS (0:30 - 1:30)
 
-### 4. Setting Reminders & Home View (1:15 - 1:35)
-- **Visual:** Tap "Set Reminder" for Amlodipine 5mg at 8:00 AM daily. Show notification scheduled alert.
+* **Action:** Open MediSathi App. Tap **Scan Medicine**.
+* **Presenter:** "Watch the live feedback box. The motion gate checks camera stability. We select **TEST-001 (Clear Paracetamol 500 mg)**."
+* **Screen:** Flashes Green — **"Medicine Verified"**.
+* **Voice Output (TTS):** *"दवा सत्यापित: पैरासिटामोल 500 मिलीग्राम। डॉक्टर की सलाह के अनुसार खाना खाने के बाद लें।"*
+* **Presenter:** "Notice the signals checklist: Name matched, strength matched, shade verified, image sharp. With one tap, Sunanda adds it to her daily medicines and sets an 8:00 AM reminder."
 
-### 5. Shaky-Hand Robustness Safeguard (1:35 - 1:55)
-- **Visual:** Deliberately shake phone while attempting to scan a strip (or toggle Demo Mode: Simulate Shaky Hand).
-- **Result:** Quality engine rejects blurry frames. Screen displays: *"Unable to verify — Too shaky. Please hold steadier or ask your caregiver."*
+---
 
-### 6. Look-Alike "Don't Guess" Protection (1:55 - 2:15)
-- **Visual:** Scan Amlodipine 10mg strip where strength digit is obscured.
-- **Result:** Gate detects look-alike group `LA-AMLO` missing strength discriminator. Screen displays: **"Don't Guess — Unable to verify medicine identity. Please rescan or ask caregiver."**
+## Act 3: Don't-Guess Engine & Caregiver Escalation (1:30 - 2:30)
 
-### 7. Simulated Caregiver Alert (2:15 - 2:35)
-- **Visual:** After two consecutive failed scans, screen prompts: *"Simulated Caregiver Alert — Notify Rahul?"* Consent banner explicitly displays *"Prototype: simulated alert — no real SMS sent."*
+* **Action:** Tap **Scan Medicine** again. Select **TEST-002 (Blurry Strip)**.
+* **Screen:** Amber Review Card — **"Unable to verify this medicine"**. Reason: *Photo is blurry or poorly lit.*
+* **Presenter:** "Notice MediSathi refused to guess! Now let's try **TEST-003 (Amlodipine without mg)**."
+* **Screen:** Amber Card — Reason: *Similar medicine detected, but strength (mg) is unclear.*
+* **Screen Trigger:** Pop-up dialog: *"2 consecutive unverified scans. Alert caregiver Rahul?"*
+* **Action:** Tap **Alert Caregiver**.
+* **Screen:** Opens Caregiver Escalation Screen. Shows privacy consent toggles (photo sharing OFF by default) and simulated event log. Banner reads: *Prototype: simulated alert — nothing was sent.*
 
-### 8. Voice & Vernacular Support (2:35 - 2:50)
-- **Visual:** Toggle Language selector to Marathi (मराठी) / Hindi (हिंदी).
-- **Audio:** Tap "🔊 Read Aloud" — app reads result aloud in selected vernacular TTS voice.
+---
 
-### 9. Conclusion & Honest Scope (2:50 - 3:00)
-- **Visual:** Show Settings / About MediSathi with disclaimer and link to GitHub repository and automated safety test suite.
-- **Narrative:** *"MediSathi — Right Medicine. Safe You. When MediSathi is not sure, it does not guess."*
+## Act 4: Multi-Drug Interaction Guard (2:30 - 3:00)
+
+* **Action:** Navigate to **My Medicines** / **Interaction Warnings**.
+* **Screen:** Red Warning Banner — **Potential Drug Interaction Detected: Amlodipine + Simvastatin**.
+* **Presenter:** "MediSathi automatically cross-checks saved medicines against verified clinical interaction rules. It provides plain-language warnings in English, Hindi, and Marathi, advising Sunanda to consult her doctor."
+* **Closing:** "MediSathi: Offline, deterministic, elderly-friendly medication verification. Thank you!"
