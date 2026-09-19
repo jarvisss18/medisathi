@@ -1,0 +1,58 @@
+[
+  {
+    "case_id": "TEST-001",
+    "description": "Clear image of Paracetamol 500 mg - exact match",
+    "ocr_raw_text": "Paracetamol Tablets IP 500 mg\nBatch: B1234\nExp: 12/2027",
+    "quality_metrics": {
+      "laplacian_variance": 180.5,
+      "glare_ratio": 0.02,
+      "mean_brightness": 128.0
+    },
+    "expected_result": "MATCH",
+    "expected_matched_id": "MED-001",
+    "expected_min_score": 0.90,
+    "expected_reason_code": "EXACT_NAME_AND_STRENGTH_MATCH"
+  },
+  {
+    "case_id": "TEST-002",
+    "description": "Blurry image below threshold",
+    "ocr_raw_text": "Parac... 500...",
+    "quality_metrics": {
+      "laplacian_variance": 45.0,
+      "glare_ratio": 0.05,
+      "mean_brightness": 110.0
+    },
+    "expected_result": "REVIEW",
+    "expected_matched_id": null,
+    "expected_min_score": 0.0,
+    "expected_reason_code": "QUALITY_BLUR_FAILED"
+  },
+  {
+    "case_id": "TEST-003",
+    "description": "Lookalike ambiguity: Amlodipine without clear strength reading",
+    "ocr_raw_text": "Amlodipine Tablets IP",
+    "quality_metrics": {
+      "laplacian_variance": 150.0,
+      "glare_ratio": 0.01,
+      "mean_brightness": 135.0
+    },
+    "expected_result": "REVIEW",
+    "expected_matched_id": null,
+    "expected_min_score": 0.65,
+    "expected_reason_code": "LOOKALIKE_AMBIGUITY_STRENGTH_MISSING"
+  },
+  {
+    "case_id": "TEST-004",
+    "description": "Unknown medicine text - complete mismatch",
+    "ocr_raw_text": "Random Vitamin Compound XYZ 1000 IU",
+    "quality_metrics": {
+      "laplacian_variance": 210.0,
+      "glare_ratio": 0.01,
+      "mean_brightness": 140.0
+    },
+    "expected_result": "REJECT",
+    "expected_matched_id": null,
+    "expected_min_score": 0.20,
+    "expected_reason_code": "NO_MATCH_FOUND"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-09-19",
+  "quality_gate": {
+    "min_laplacian_variance": 100.0,
+    "max_glare_ratio": 0.15,
+    "min_mean_brightness": 40.0,
+    "max_mean_brightness": 230.0
+  },
+  "ocr_gate": {
+    "exact_match_weight": 0.50,
+    "strength_match_weight": 0.30,
+    "keyword_match_weight": 0.20,
+    "min_ocr_confidence": 0.60
+  },
+  "color_gate": {
+    "enabled": false,
+    "weight": 0.20,
+    "max_hue_difference": 30.0,
+    "note": "Disabled by default until physical strip calibration is completed by human team"
+  },
+  "confidence_thresholds": {
+    "match_accept_min": 0.85,
+    "review_min": 0.60,
+    "reject_below": 0.60
+  },
+  "safety_policy": {
+    "fail_safe_action": "REVIEW",
+    "require_strength_match": true,
+    "allow_llm_override": false
+  }
+}

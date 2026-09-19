@@ -1,0 +1,38 @@
+[
+  {
+    "rule_id": "INT-001",
+    "drug_a": "Aspirin",
+    "drug_b": "Ibuprofen",
+    "severity": "HIGH",
+    "risk_description_en": "Taking Aspirin and Ibuprofen together can increase the risk of severe stomach bleeding and reduce the heart-protective effect of Aspirin.",
+    "risk_description_hi": "एस्पिरिन और इबुप्रोफेन को एक साथ लेने से पेट में ब्लीडिंग का खतरा बढ़ सकता है और एस्पिरिन का दिल की सुरक्षा वाला असर कम हो सकता है।",
+    "risk_description_mr": "एस्पिरिन आणि आयबूप्रोफेन एकत्र घेतल्यास पोटात रक्तस्त्राव होण्याचा धोका वाढू शकतो आणि एस्पिरिनचा हृदयाच्या संरक्षणाचा प्रभाव कमी होऊ शकतो.",
+    "clinical_guidance": "Avoid concurrent use without consulting a physician. Space doses apart if explicitly directed.",
+    "source": "Standard Clinical Drug Interaction Database — team verified",
+    "updated_at": "2026-09-19"
+  },
+  {
+    "rule_id": "INT-002",
+    "drug_a": "Amlodipine",
+    "drug_b": "Simvastatin",
+    "severity": "MEDIUM",
+    "risk_description_en": "Amlodipine can increase blood levels of Simvastatin, raising the risk of muscle breakdown (rhabdomyolysis).",
+    "risk_description_hi": "एम्लोडिपाइन सिम्वास्टैटिन के रक्त स्तर को बढ़ा सकता है, जिससे मांसपेशियों में क्षति का खतरा बढ़ जाता है।",
+    "risk_description_mr": "ॲम्लोडिपाइनमुळे सिम्वास्टॅटिनचे रक्तातील प्रमाण वाढू शकते, ज्यामुळे स्नायूंचे नुकसान होण्याचा धोका वाढतो.",
+    "clinical_guidance": "Simvastatin dose should not exceed 20 mg daily when co-administered with Amlodipine.",
+    "source": "Standard Clinical Drug Interaction Database — team verified",
+    "updated_at": "2026-09-19"
+  },
+  {
+    "rule_id": "INT-003",
+    "drug_a": "Telmisartan",
+    "drug_b": "Ibuprofen",
+    "severity": "HIGH",
+    "risk_description_en": "NSAIDs like Ibuprofen may diminish the blood pressure-lowering effect of Telmisartan and increase the risk of kidney damage.",
+    "risk_description_hi": "इबुप्रोफेन जैसी दवाएं टेल्मीसार्टन के ब्लड प्रेशर कम करने वाले असर को घटा सकती हैं और गुर्दे (किडनी) की क्षति का खतरा बढ़ा सकती हैं।",
+    "risk_description_mr": "आयबूप्रोफेनसारखी औषधे टेल्मीसार्टनचा रक्तदाब कमी करण्याचा प्रभाव कमी करू शकतात आणि मूत्रपिंडाच्या (किडनी) नुकसानीचा धोका वाढवू शकतात.",
+    "clinical_guidance": "Monitor kidney function and blood pressure regularly if combined.",
+    "source": "Standard Clinical Drug Interaction Database — team verified",
+    "updated_at": "2026-09-19"
+  }
+]
