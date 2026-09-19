@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:medisathi/features/scan/scan_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:medisathi/main.dart';
 
 void main() {
-  testWidgets('ScanScreen renders title', (WidgetTester tester) async {
+  testWidgets('MediSathiApp loads splash screen', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ScanScreen(),
+      const ProviderScope(
+        child: MediSathiApp(),
       ),
     );
-    expect(find.text('Scan Medicine'), findsOneWidget);
+    await tester.pump();
+    expect(find.text('MediSathi'), findsWidgets);
+    await tester.pump(const Duration(seconds: 3));
   });
 }
