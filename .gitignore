@@ -1,0 +1,52 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+mobile/build/
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.pub-cache/
+mobile/.pub/
+
+# Android
+*.apk
+*.aab
+*.dex
+*.class
+mobile/android/app/debug/
+mobile/android/app/release/
+.gradle/
+local.properties
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+backend/__pycache__/
+backend/.venv/
+
+# Environment and Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# IDE & System
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Temporary evaluation outputs
+/tmp/
