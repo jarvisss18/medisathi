@@ -1,0 +1,7 @@
+﻿Analyzing mobile...                                             
+
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:699:10 - expected_token
+  error - Expected to find ')' - lib\features\verification\verification_result_screen.dart:700:8 - expected_token
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\verification\verification_result_screen.dart:863:3 - expected_executable
+  error - Expected a method, getter, setter or operator declaration. This appears to be incomplete code. Try removing it or completing it - lib\features\verification\verification_result_screen.dart:864:1 - expected_executable
+

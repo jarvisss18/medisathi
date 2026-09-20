@@ -1,0 +1,22 @@
+﻿Analyzing lib...                                                
+
+  error - The argument type 'TimezoneInfo' can't be assigned to the parameter type 'String'.  - lib\core\notifications\notification_service.dart:30:42 - argument_type_not_assignable
+
+flutter : 1 issue found. 
+(ran in 3.4s)
+At line:1 char:1
++ flutter analyze lib/ 
+--no-fatal-infos 2>&1 | 
+Out-File -FilePath analy 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (1  
+   issue found. (ran in   
+  3.4s):String) [], Re    
+moteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 

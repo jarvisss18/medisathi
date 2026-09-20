@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:medisathi/core/csv/csv_parser.dart';
 import 'package:medisathi/core/gate/confidence_gate.dart';
 import 'package:medisathi/core/ocr/ocr_engine.dart';
 import 'package:medisathi/core/quality/quality_checker.dart';
@@ -14,44 +14,37 @@ void main() {
     gate = ConfidenceGate(matchAcceptMin: 0.85, reviewMin: 0.60);
     ocrEngine = OcrEngine();
 
-    // Load canonical medicines dataset from root data directory or assets
-    final medicinesFile = File('../data/medicines.json');
-    if (medicinesFile.existsSync()) {
-      final jsonStr = medicinesFile.readAsStringSync();
-      catalog = List<Map<String, dynamic>>.from(jsonDecode(jsonStr));
+    final csvFile = File('../data/medicines.csv');
+    if (csvFile.existsSync()) {
+      catalog = CsvParser.parseMedicineCatalogCsv(csvFile.readAsStringSync());
     } else {
-      // Fallback mock catalog for testing environment
       catalog = [
         {
           "medicine_id": "MED-001",
           "canonical_name": "Paracetamol",
-          "brand_name": "Crocin",
-          "aliases": ["paracetamol", "acetaminophen"],
+          "brand_name": "Crocin 500",
+          "aliases": ["paracetamol", "crocin"],
           "strength": "500 mg",
           "ocr_keywords": ["paracetamol", "500", "mg"],
           "lookalike_group_id": "LA-PARA",
-          "color_signature": {"calibrated": false},
         },
         {
           "medicine_id": "MED-003",
           "canonical_name": "Amlodipine",
-          "brand_name": "Amlokind",
-          "aliases": ["amlodipine"],
+          "brand_name": "Amlokind 5",
+          "aliases": ["amlodipine", "amlokind"],
           "strength": "5 mg",
           "ocr_keywords": ["amlodipine", "5", "mg"],
           "lookalike_group_id": "LA-AMLO",
-          "color_signature": {"calibrated": false},
         },
         {
-          "medicine_id": "MED-004",
-          "canonical_name": "Amlodipine",
-          "brand_name": "Amlokind",
-          "aliases": ["amlodipine"],
-          "strength": "10 mg",
-          "ocr_keywords": ["amlodipine", "10", "mg"],
-          "lookalike_group_id": "LA-AMLO",
-          "color_signature": {"calibrated": false},
-        },
+          "medicine_id": "MED-011",
+          "canonical_name": "Pantoprazole",
+          "brand_name": "Pan 40",
+          "aliases": ["pantoprazole", "pan 40", "pan"],
+          "strength": "40 mg",
+          "ocr_keywords": ["pantoprazole", "40", "mg", "pan"],
+        }
       ];
     }
   });
@@ -76,14 +69,14 @@ void main() {
       );
 
       expect(decision.state, GateDecisionState.match);
-      expect(decision.matchedMedicineId, 'MED-001');
+      expect(decision.matchedCanonicalName, 'Paracetamol');
       expect(decision.confidenceScore, greaterThanOrEqualTo(0.85));
     });
 
     test('TEST-002: Quality Check Failure forces REVIEW state (Don\'t Guess)', () {
       final ocrResult = ocrEngine.parseRawText("Paracetamol 500 mg");
       final failedQuality = QualityCheckResult(
-        laplacianVariance: 45.0, // Failed blur threshold
+        laplacianVariance: 45.0,
         glareRatio: 0.05,
         meanBrightness: 110.0,
         isBlurPassed: false,
@@ -104,7 +97,6 @@ void main() {
     });
 
     test('TEST-003: Look-alike medicine with missing strength forces REVIEW', () {
-      // Amlodipine without 5mg or 10mg specified
       final ocrResult = ocrEngine.parseRawText("Amlodipine Tablets IP");
       final qualityResult = QualityCheckResult(
         laplacianVariance: 150.0,
@@ -146,6 +138,52 @@ void main() {
 
       expect(decision.state, GateDecisionState.reject);
       expect(decision.reasonCode, equals('NO_MATCH_FOUND'));
+    });
+
+    test('TEST-005: Low strength 5mg medicine (Amlodipine 5mg) matches correctly', () {
+      final ocrResult = ocrEngine.parseRawText("Amlokind 5 mg Tablets");
+      final qualityResult = QualityCheckResult(
+        laplacianVariance: 180.0,
+        glareRatio: 0.01,
+        meanBrightness: 130.0,
+        isBlurPassed: true,
+        isGlarePassed: true,
+        isBrightnessPassed: true,
+        isPassed: true,
+      );
+
+      final decision = gate.evaluate(
+        ocrResult: ocrResult,
+        qualityResult: qualityResult,
+        medicinesCatalog: catalog,
+      );
+
+      expect(decision.state, GateDecisionState.match);
+      expect(decision.matchedCanonicalName, 'Amlodipine');
+      expect(decision.matchedStrength, '5 mg');
+    });
+
+    test('TEST-006: Brand alias Pan 40 (Pantoprazole 40 mg) matches correctly', () {
+      final ocrResult = ocrEngine.parseRawText("Pan 40 Gastro-resistant Tablets");
+      final qualityResult = QualityCheckResult(
+        laplacianVariance: 180.0,
+        glareRatio: 0.01,
+        meanBrightness: 130.0,
+        isBlurPassed: true,
+        isGlarePassed: true,
+        isBrightnessPassed: true,
+        isPassed: true,
+      );
+
+      final decision = gate.evaluate(
+        ocrResult: ocrResult,
+        qualityResult: qualityResult,
+        medicinesCatalog: catalog,
+      );
+
+      expect(decision.state, GateDecisionState.match);
+      expect(decision.matchedCanonicalName, 'Pantoprazole');
+      expect(decision.matchedStrength, '40 mg');
     });
   });
 }

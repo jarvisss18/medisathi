@@ -1,0 +1,25 @@
+﻿flutter : Error parsing 
+LocalFile: 
+'C:\hackthon\Musa Codex\MV
+P\mobile\android\app\src\m
+ain\AndroidManifest.xml' 
+Please ensure that the 
+android manifest is a 
+valid XML document and 
+try again.
+At line:1 char:1
++ flutter build apk 
+--debug 2>&1 | Out-File 
+-FilePath 
+build_native_out. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (E  
+  rror parsing L... and   
+  try again.:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 

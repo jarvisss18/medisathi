@@ -1,0 +1,22 @@
+﻿Analyzing lib...                                                
+
+  error - The getter 'name' isn't defined for the type 'TimezoneInfo'. Try importing the library that defines 'name', correcting the name to the name of an existing getter, or defining a getter or field named 'name' - lib\core\notifications\notification_service.dart:30:49 - undefined_getter
+
+flutter : 1 issue found. 
+(ran in 2.8s)
+At line:1 char:1
++ flutter analyze lib/ 
+--no-fatal-infos 2>&1 | 
+Out-File -FilePath analy 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (1  
+   issue found. (ran in   
+  2.8s):String) [], Re    
+moteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 

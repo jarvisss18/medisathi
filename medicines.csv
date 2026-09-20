@@ -1,0 +1,11 @@
+id,generic_name,strength,form,ocr_keywords,visual_hints
+MED001,Paracetamol,500 mg,Tablet,paracetamol|paracet|500 mg|500mg,tablet|blister strip
+MED002,Amlodipine,5 mg,Tablet,amlodipine|amlod|5 mg|5mg,tablet|blister strip
+MED003,Metformin,500 mg,Tablet,metformin|metfor|500 mg|500mg,tablet|blister strip
+MED004,Atorvastatin,10 mg,Tablet,atorvastatin|atorva|10 mg|10mg,tablet|blister strip
+MED005,Omeprazole,20 mg,Capsule,omeprazole|omez|20 mg|20mg,capsule|blister strip
+MED006,Furosemide,40 mg,Tablet,furosemide|frusemide|lasix|40 mg|40mg,tablet|blister strip
+MED007,Amoxicillin,500 mg,Capsule,amoxicillin|amoxycillin|amox|500 mg|500mg,capsule|blister strip
+MED008,Ibuprofen,400 mg,Tablet,ibuprofen|ibu|400 mg|400mg,tablet|blister strip
+MED009,Losartan,50 mg,Tablet,losartan|losar|50 mg|50mg,tablet|blister strip
+MED010,Vitamin D3 (Cholecalciferol),60000 IU,Softgel Capsule,vitamin d3|vitamin d|cholecalciferol|60000 iu|60000iu,capsule|blister strip

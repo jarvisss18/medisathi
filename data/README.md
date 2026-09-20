@@ -2,7 +2,8 @@
 
 This directory contains the single source of truth datasets for MediSathi:
 
-- `medicines.json` — Drug catalog (14 items across 4 look-alike groups)
+- `medicines.csv` — Offline CSV drug catalog (parsed directly by mobile app for zero-dependency offline load)
+- `medicines.json` — JSON drug catalog (14+ items across look-alike groups)
 - `interaction_rules.json` — Deterministic drug-drug interaction safety rules
 - `gate_config.json` — Quality, OCR, and Confidence Gate threshold parameters
 - `test_vectors/verify_cases.json` — End-to-end verification test vectors
@@ -15,6 +16,7 @@ All drug entries are grounded in standard generic pharmacology classifications. 
 
 | Dataset File | Primary Purpose | Synchronized Target |
 | :--- | :--- | :--- |
+| `medicines.csv` | Primary offline CSV catalog of verifiable medications | `mobile/assets/data/medicines.csv` |
 | `medicines.json` | Catalog of verifiable medications & look-alike groups | `mobile/assets/data/medicines.json`, SQLite DB, Python API |
 | `interaction_rules.json` | High-risk interaction lookup table | `mobile/assets/data/interaction_rules.json`, Python API |
 | `gate_config.json` | Deterministic verification gate thresholds | `mobile/assets/data/gate_config.json`, Python Safety Gate |

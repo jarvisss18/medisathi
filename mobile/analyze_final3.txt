@@ -1,0 +1,27 @@
+﻿Analyzing lib...                                                
+
+  error - Undefined class 'MethodChannel'. Try changing the name to the name of an existing class, or creating a class with the name 'MethodChannel' - lib\core\notifications\notification_service.dart:55:16 - undefined_class
+  error - Const variables must be initialized with a constant value. Try changing the initializer to be a constant expression - lib\core\notifications\notification_service.dart:55:52 - const_initialized_with_non_constant_value
+  error - The method 'MethodChannel' isn't defined for the type 'NotificationService'. Try correcting the name to the name of an existing method, or defining a method named 'MethodChannel' - lib\core\notifications\notification_service.dart:55:52 - undefined_method
+
+flutter : 3 issues 
+found. (ran in 16.0s)
+At line:1 char:1
++ flutter analyze 
+lib/ --no-fatal-infos 
+2>&1 | Out-File 
+-FilePath analy ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : 
+NotSpecified: (3     
+issues found. (ran i  
+  n 16.0s):String) 
+[],     
+RemoteException
+    + 
+FullyQualifiedError   
+ Id : 
+NativeCommandErr    or
+ 

@@ -1,0 +1,35 @@
+﻿Analyzing lib...                                                
+
+  error - The argument type 'TimezoneInfo' can't be assigned to the parameter type 'String'.  - lib\core\notifications\notification_service.dart:29:42 - argument_type_not_assignable
+  error - The named parameter 'settings' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:37:19 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 1 found. Try removing the extra positional arguments, or specifying the name for named arguments - lib\core\notifications\notification_service.dart:38:7 - extra_positional_arguments_could_be_named
+  error - The named parameter 'id' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:88:21 - missing_required_argument
+  error - The named parameter 'notificationDetails' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:88:21 - missing_required_argument
+  error - The named parameter 'scheduledDate' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:88:21 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 5 found. Try removing the extra positional arguments, or specifying the name for named arguments - lib\core\notifications\notification_service.dart:89:9 - extra_positional_arguments_could_be_named
+  error - The named parameter 'id' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:103:23 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 4 found. Try removing the extra positional arguments, or specifying the name for named arguments - lib\core\notifications\notification_service.dart:103:28 - extra_positional_arguments_could_be_named
+  error - The named parameter 'id' is required, but there's no corresponding argument. Try adding the required argument - lib\core\notifications\notification_service.dart:111:19 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 1 found. Try removing the extra positional arguments, or specifying the name for named arguments - lib\core\notifications\notification_service.dart:111:26 - extra_positional_arguments_could_be_named
+warning - The value of the local variable 'timeFormatted' isn't used. Try removing the variable or using it - lib\features\reminders\set_reminder_screen.dart:315:27 - unused_local_variable
+   info - Don't use 'BuildContext's across async gaps. Try rewriting the code to not use the 'BuildContext', or guard the use with a 'mounted' check - lib\features\reminders\set_reminder_screen.dart:342:83 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check. Guard a 'State.context' use with a 'mounted' check on the State, and other BuildContext use with a 'mounted' check on the BuildContext - lib\features\reminders\set_reminder_screen.dart:348:101 - use_build_context_synchronously
+
+flutter : 14 issues 
+found. (ran in 2.7s)
+At line:1 char:1
++ flutter analyze lib/ 
+--no-fatal-infos 2>&1 | 
+Out-File -FilePath analy 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (1  
+  4 issues found. (ran    
+ in 2.7s):String) [],     
+RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 

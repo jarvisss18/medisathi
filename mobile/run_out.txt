@@ -1,0 +1,263 @@
+﻿Launching lib\main.dart on SM S908E in debug mode...
+Running Gradle task 'assembleDebug'...                          
+flutter : WARNING: Your 
+app uses the following 
+plugins that apply Kotlin 
+Gradle Plugin (KGP): 
+flutter_timezone, 
+flutter_tts
+At line:1 char:1
++ flutter run --debug 
+2>&1 | Out-File -FilePath 
+run_out.txt -Encoding u 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (W  
+  ARNING: Your a...ne,    
+ flutter_tts:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+Future versions of 
+Flutter will fail to 
+build if your app uses 
+plugins that apply KGP.
+
+Please check the 
+changelogs of these 
+plugins and upgrade to a 
+version that supports 
+Built-in Kotlin.
+If no such version 
+exists, report the issue 
+to the plugin. If 
+necessary, here is a 
+guide on filing 
+an issue against a 
+plugin: https://docs.flutt
+er.dev/release/breaking-ch
+anges/migrate-to-built-in-
+kotlin/for-app-developers#
+report-incompatible-kotlin
+-gradle-plugin-usage-to-pl
+ugin-authors
+
+If you are a plugin 
+author, please migrate 
+your plugin to Built-in 
+Kotlin using this guide: h
+ttps://docs.flutter.dev/re
+lease/breaking-changes/mig
+rate-to-built-in-kotlin/fo
+r-plugin-authors
+Running Gradle task 'assembleDebug'...                             34.1s
+ΓêÜ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...          11.2s
+I/FlutterActivityAndFragmentDelegate( 6442): If you are attempting to set --enable-dart-profiling via Intent extras to launch a Flutter component outside of using the Flutter CLI, note that support for setting engine flags on Android via Intent will soon be dropped; see https://github.com/flutter/flutter/issues/180686 for more information on this breaking change. To migrate, set --enable-dart-profiling or any other flags specified via Intent extras on the command line instead or see https://github.com/flutter/flutter/blob/main/docs/engine/Flutter-Android-Engine-Flags.md for alternative methods.
+D/FlutterJNI( 6442): Beginning load of flutter...
+D/FlutterJNI( 6442): flutter (null) was loaded normally!
+I/flutter ( 6442): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+D/FlutterRenderer( 6442): Width is zero. 0,0
+D/FlutterRenderer( 6442): Width is zero. 0,0
+D/FlutterJNI( 6442): Sending viewport metrics to the engine.
+D/FlutterJNI( 6442): Sending viewport metrics to the engine.
+Syncing files to device SM S908E...                                154ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SM S908E is available at: http://127.0.0.1:54997/WFV9Myte05E=/
+The Flutter DevTools debugger and profiler on SM S908E is available at: http://127.0.0.1:54997/WFV9Myte05E=/devtools/?uri=ws://127.0.0.1:54997/WFV9Myte05E=/ws
+D/ProfileInstaller( 6442): Installing profile for com.bugbusters.medisathi.medisathi
+I/InsetsSourceConsumer( 6442): applyRequestedVisibilityToControl: visible=true, type=statusBars, host=com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity
+I/InsetsSourceConsumer( 6442): applyRequestedVisibilityToControl: visible=true, type=navigationBars, host=com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f92669410 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=false req=(1080,2316)0 dur=9 res=0x1 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=1
+D/VRI[MainActivity]@4d77125( 6442): reportNextDraw android.view.ViewRootImpl.performTraversals:5443 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 android.view.Choreographer$CallbackRecord.run:1910 
+I/Choreographer( 6442): Skipped 90 frames!  The application may be doing too much work on its main thread.
+I/BLASTBufferQueue( 6442): [a4ecb66 SurfaceView[com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity]@0#1](f:0,a:0,s:0) onFrameAvailable the first frame is available
+I/SurfaceComposerClient( 6442): apply transaction with the first frame. layerId: 96632, bufferData(ID: 27668179320846, frameNumber: 1)
+I/SurfaceView( 6442): 172936038 finishedDrawing
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=false req=(1080,2316)0 dur=2 res=0x1 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=1
+D/VRI[MainActivity]@4d77125( 6442): reportNextDraw android.view.ViewRootImpl.performTraversals:5443 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 android.view.Choreographer$CallbackRecord.run:1910 
+D/VRI[MainActivity]@4d77125( 6442): Setup new sync=wmsSync-VRI[MainActivity]@4d77125#1
+I/VRI[MainActivity]@4d77125( 6442): Creating new active sync group VRI[MainActivity]@4d77125#2
+D/VRI[MainActivity]@4d77125( 6442): Draw frame after cancel
+D/VRI[MainActivity]@4d77125( 6442): registerCallbacksForSync syncBuffer=false
+D/SurfaceView( 6442): 172936038 updateSurfacePosition RenderWorker, frameNr = 1, position = [0, 0, 1080, 2316] surfaceSize = 1080x2316
+I/SV[172936038 MainActivity]( 6442): uSP: rtp = Rect(0, 0 - 1080, 2316) rtsw = 1080 rtsh = 2316
+I/SV[172936038 MainActivity]( 6442): onSSPAndSRT: pl = 0 pt = 0 sx = 1.0 sy = 1.0
+I/SV[172936038 MainActivity]( 6442): aOrMT: VRI[MainActivity]@4d77125 t = android.view.SurfaceControl$Transaction@9754ae5 fN = 1 android.view.SurfaceView.-$$Nest$mapplyOrMergeTransaction:0 android.view.SurfaceView$SurfaceViewPositionUpdateListener.positionChanged:1932 android.graphics.RenderNode$CompositePositionUpdateListener.positionChanged:401 
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182675cd0 mBlastBufferQueue=0xb4000071e268b420 fn= 1 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.SurfaceView.applyOrMergeTransaction:1863 android.view.SurfaceView.-$$Nest$mapplyOrMergeTransaction:0 android.view.SurfaceView$SurfaceViewPositionUpdateListener.positionChanged:1932 
+D/VRI[MainActivity]@4d77125( 6442): Received frameDrawingCallback syncResult=0 frameNum=1.
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb4000071826a0590 mBlastBufferQueue=0xb4000071e268b420 fn= 1 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$12.onFrameDraw:15441 android.view.ThreadedRenderer$1.onFrameDraw:718 <bottom of call stack> 
+I/VRI[MainActivity]@4d77125( 6442): Setting up sync and frameCommitCallback
+I/BLASTBufferQueue( 6442): [VRI[MainActivity]@4d77125#0](f:0,a:0,s:0) onFrameAvailable the first frame is available
+I/SurfaceComposerClient( 6442): apply transaction with the first frame. layerId: 96627, bufferData(ID: 27668179320851, frameNumber: 1)
+I/VRI[MainActivity]@4d77125( 6442): Received frameCommittedCallback lastAttemptedDrawFrameNum=1 didProduceBuffer=true
+D/HWUI    ( 6442): CFMS:: SetUp Pid : 6442    Tid : 6464
+D/VRI[MainActivity]@4d77125( 6442): reportDrawFinished seqId=0
+D/VRI[MainActivity]@4d77125( 6442): mThreadedRenderer.initializeIfNeeded()#2 mSurface={isValid=true 0xb400007012684490}
+D/InputMethodManagerUtils( 6442): startInputInner - Id : 0
+I/InputMethodManager( 6442): startInputInner - IInputMethodManagerGlobalInvoker.startInputOrWindowGainedFocus
+I/InputMethodManager( 6442): handleMessage: setImeVisibility visible=false
+D/InsetsController( 6442): hide(ime(), fromIme=false)
+I/ImeTracker( 6442): com.bugbusters.medisathi.medisathi:c280cb2b: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/InputTransport( 6442): Input channel constructed: 'ClientS', fd=182
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY RENDERING LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 7.8 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///C:/hackthon/Musa%20Codex/MVP/mobile/lib/features/reminders/reminders_list_screen.dart:218:27
+
+To inspect this widget in Flutter DevTools, visit:
+http://127.0.0.1:54997/WFV9Myte05E=/devtools//#/inspector?uri=http%3A%2F%2F127.0.0.1%3A54997%2FWFV9Myte05E%3D%2F&inspectorRef=inspector-0
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#c708e relayoutBoundary=up15 OVERFLOWING:
+  creator: Row ΓåÉ Column ΓåÉ Expanded ΓåÉ Row ΓåÉ Column ΓåÉ Padding ΓåÉ Semantics ΓåÉ DefaultTextStyle ΓåÉ
+    AnimatedDefaultTextStyle ΓåÉ _InkFeatures-[GlobalKey#e87b2 ink renderer] ΓåÉ
+    NotificationListener<LayoutChangedNotification> ΓåÉ CustomPaint ΓåÉ Γï»
+  parentData: offset=Offset(0.0, 29.0); flex=null; fit=null (can use size)
+  constraints: BoxConstraints(0.0<=w<=192.0, 0.0<=h<=Infinity)
+  size: Size(192.0, 21.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+ΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñΓùóΓùñ
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+
+Another exception was thrown: A RenderFlex overflowed by 7.8 pixels on the right.
+Another exception was thrown: A RenderFlex overflowed by 7.4 pixels on the right.
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+Another exception was thrown: A RenderFlex overflowed by 7.8 pixels on the right.
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=true req=(1080,2316)0 dur=0 res=0x0 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=2
+I/VRI[MainActivity]@4d77125( 6442): registerCallbackForPendingTransactions
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb40000718269df10 mBlastBufferQueue=0xb4000071e268b420 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6536 android.view.ViewRootImpl$4.onFrameDraw:2489 android.view.ThreadedRenderer$1.onFrameDraw:718 
+I/BLASTBufferQueue_Java( 6442): applyPendingTransactions, mName= VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 frameNumber= 2 caller= android.view.ViewRootImpl$10.lambda$onFrameDraw$0:6550 android.view.ViewRootImpl$10.$r8$lambda$9Asgene6-vG9RkigzOD8vEb0AKc:0 android.view.ViewRootImpl$10$$ExternalSyntheticLambda0.onFrameCommit:0 android.view.ThreadedRenderer$1.lambda$onFrameDraw$0:730 android.view.ThreadedRenderer$1$$ExternalSyntheticLambda0.onFrameCommit:0 <bottom of call stack> 
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+D/WindowOnBackDispatcher( 6442): onBackInvoked, callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=true req=(1080,2316)0 dur=1 res=0x0 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=2
+I/VRI[MainActivity]@4d77125( 6442): registerCallbackForPendingTransactions
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182674290 mBlastBufferQueue=0xb4000071e268b420 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6536 android.view.ViewRootImpl$4.onFrameDraw:2489 android.view.ThreadedRenderer$1.onFrameDraw:718 
+I/BLASTBufferQueue_Java( 6442): applyPendingTransactions, mName= VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 frameNumber= 2 caller= android.view.ViewRootImpl$10.lambda$onFrameDraw$0:6550 android.view.ViewRootImpl$10.$r8$lambda$9Asgene6-vG9RkigzOD8vEb0AKc:0 android.view.ViewRootImpl$10$$ExternalSyntheticLambda0.onFrameCommit:0 android.view.ThreadedRenderer$1.lambda$onFrameDraw$0:730 android.view.ThreadedRenderer$1$$ExternalSyntheticLambda0.onFrameCommit:0 <bottom of call stack> 
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=true req=(1080,2316)0 dur=0 res=0x0 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=2
+I/VRI[MainActivity]@4d77125( 6442): registerCallbackForPendingTransactions
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182680850 mBlastBufferQueue=0xb4000071e268b420 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6536 android.view.ViewRootImpl$4.onFrameDraw:2489 android.view.ThreadedRenderer$1.onFrameDraw:718 
+I/BLASTBufferQueue_Java( 6442): applyPendingTransactions, mName= VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 frameNumber= 2 caller= android.view.ViewRootImpl$10.lambda$onFrameDraw$0:6550 android.view.ViewRootImpl$10.$r8$lambda$9Asgene6-vG9RkigzOD8vEb0AKc:0 android.view.ViewRootImpl$10$$ExternalSyntheticLambda0.onFrameCommit:0 android.view.ThreadedRenderer$1.lambda$onFrameDraw$0:730 android.view.ThreadedRenderer$1$$ExternalSyntheticLambda0.onFrameCommit:0 <bottom of call stack> 
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+Another exception was thrown: A RenderFlex overflowed by 7.4 pixels on the right.
+D/TTS     ( 6442): Utterance ID has started: 4a7c88a0-f0a6-44a0-9348-2dad70eaa78c
+D/WindowOnBackDispatcher( 6442): onBackInvoked, callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=true req=(1080,2316)0 dur=0 res=0x0 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=2
+I/VRI[MainActivity]@4d77125( 6442): registerCallbackForPendingTransactions
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb40000718269e450 mBlastBufferQueue=0xb4000071e268b420 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6536 android.view.ViewRootImpl$4.onFrameDraw:2489 android.view.ThreadedRenderer$1.onFrameDraw:718 
+I/BLASTBufferQueue_Java( 6442): applyPendingTransactions, mName= VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 frameNumber= 2 caller= android.view.ViewRootImpl$10.lambda$onFrameDraw$0:6550 android.view.ViewRootImpl$10.$r8$lambda$9Asgene6-vG9RkigzOD8vEb0AKc:0 android.view.ViewRootImpl$10$$ExternalSyntheticLambda0.onFrameCommit:0 android.view.ThreadedRenderer$1.lambda$onFrameDraw$0:730 android.view.ThreadedRenderer$1$$ExternalSyntheticLambda0.onFrameCommit:0 <bottom of call stack> 
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+D/TTS     ( 6442): Utterance ID has completed: 4a7c88a0-f0a6-44a0-9348-2dad70eaa78c
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=no preference, reason=boost timeout, vri=VRI[MainActivity]@4d77125
+I/NotificationManager( 6442): com.bugbusters.medisathi.medisathi: notify(38719, null, Notification(channel=medisathi_reminders_alarm shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=AUTO_CANCEL|HIGH_PRIORITY color=0x00000000 category=alarm vis=PUBLIC semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+D/NotificationManager( 6442): BOOTING pkg =com.bugbusters.medisathi.medisathi mBlockedChannelsForOverflowNoti=[]
+I/ImeFocusController( 6442): onPreWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+I/ImeFocusController( 6442): onPostWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+I/VRI[MainActivity]@4d77125( 6442): handleResized, frames=ClientWindowFrames{frame=[0,0][1080,2316] display=[0,0][1080,2316] parentFrame=[0,0][0,0]} displayId=0 dragResizing=false compatScale=1.0 frameChanged=false attachedFrameChanged=false configChanged=false displayChanged=false compatScaleChanged=false dragResizingChanged=false
+D/VRI[MainActivity]@4d77125( 6442): mThreadedRenderer.initializeIfNeeded()#2 mSurface={isValid=true 0xb400007012684490}
+D/InputMethodManagerUtils( 6442): startInputInner - Id : 0
+I/InputMethodManager( 6442): startInputInner - IInputMethodManagerGlobalInvoker.startInputOrWindowGainedFocus
+I/InsetsSourceConsumer( 6442): applyRequestedVisibilityToControl: visible=true, type=statusBars, host=com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity
+I/InsetsSourceConsumer( 6442): applyRequestedVisibilityToControl: visible=true, type=navigationBars, host=com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity
+I/InputMethodManager( 6442): handleMessage: setImeVisibility visible=false
+D/InsetsController( 6442): hide(ime(), fromIme=false)
+D/InputTransport( 6442): Input channel constructed: 'ClientS', fd=186
+I/ImeTracker( 6442): com.bugbusters.medisathi.medisathi:af3ccc8c: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/VRI[MainActivity]@4d77125( 6442): call setFrameRateCategory for touch hint category=high hint, reason=touch, vri=VRI[MainActivity]@4d77125
+W/WindowOnBackDispatcher( 6442): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@c7947e0
+I/BLASTBufferQueue_Java( 6442): update, w= 1080 h= 2316 mName = VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 sc.mNativeObject= 0xb400006f9267d450 format= -3 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3574 android.view.ViewRootImpl.relayoutWindow:11685 android.view.ViewRootImpl.performTraversals:4804 android.view.ViewRootImpl.doTraversal:3924 android.view.ViewRootImpl$TraversalRunnable.run:12903 android.view.Choreographer$CallbackRecord.run:1901 
+Another exception was thrown: A RenderFlex overflowed by 7.4 pixels on the right.
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=true req=(1080,2316)0 dur=0 res=0x0 s={true 0xb400007012684490} ch=false seqId=0
+I/VRI[MainActivity]@4d77125( 6442): updateBoundsLayer: t=android.view.SurfaceControl$Transaction@c0155f3 sc=Surface(name=Bounds for - com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity@0)/@0x1b3d2b0 frame=2
+I/VRI[MainActivity]@4d77125( 6442): registerCallbackForPendingTransactions
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182693010 mBlastBufferQueue=0xb4000071e268b420 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6536 android.view.ViewRootImpl$4.onFrameDraw:2489 android.view.ThreadedRenderer$1.onFrameDraw:718 
+I/BLASTBufferQueue_Java( 6442): applyPendingTransactions, mName= VRI[MainActivity]@4d77125 mNativeObject= 0xb4000071e268b420 frameNumber= 2 caller= android.view.ViewRootImpl$10.lambda$onFrameDraw$0:6550 android.view.ViewRootImpl$10.$r8$lambda$9Asgene6-vG9RkigzOD8vEb0AKc:0 android.view.ViewRootImpl$10$$ExternalSyntheticLambda0.onFrameCommit:0 android.view.ThreadedRenderer$1.lambda$onFrameDraw$0:730 android.view.ThreadedRenderer$1$$ExternalSyntheticLambda0.onFrameCommit:0 <bottom of call stack> 
+I/ImeFocusController( 6442): onPreWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+I/ImeFocusController( 6442): onPostWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+I/VRI[MainActivity]@4d77125( 6442): stopped(true) old = false
+D/VRI[MainActivity]@4d77125( 6442): WindowStopped on com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity set to true
+D/HWUI    ( 6442): CacheManager::trimMemory(20)
+D/SurfaceView( 6442): 15377945 windowPositionLost, frameNr = 0
+I/SV[172936038 MainActivity]( 6442): aOrMT: VRI[MainActivity]@4d77125 t = android.view.SurfaceControl$Transaction@2da86de fN = 0 android.view.SurfaceView.-$$Nest$mapplyOrMergeTransaction:0 android.view.SurfaceView$SurfaceViewPositionUpdateListener.positionLost:2025 android.graphics.RenderNode$CompositePositionUpdateListener.positionLost:418 
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182681b90 mBlastBufferQueue=0xb4000071e268b420 fn= 0 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.SurfaceView.applyOrMergeTransaction:1863 android.view.SurfaceView.-$$Nest$mapplyOrMergeTransaction:0 android.view.SurfaceView$SurfaceViewPositionUpdateListener.positionLost:2025 
+I/SV[172936038 MainActivity]( 6442): windowStopped(true) false io.flutter.embedding.android.FlutterSurfaceView{a4ecb66 V.E...... ........ 0,0-1080,2316} of VRI[MainActivity]@4d77125
+I/SurfaceView( 6442): 172936038 Changes: creating=false format=false size=false visible=true alpha=false hint=false left=false top=false z=false attached=true lifecycleStrategy=false
+I/SurfaceView( 6442): 172936038 Cur surface: Surface(name=null mNativeObject=-5476376665537367744)/@0x340f568
+D/SurfaceComposerClient( 6442): setCornerRadius ## a4ecb66 SurfaceView[com.bugbusters.medisathi.medisathi/com.bugbusters.medisathi.medisathi.MainActivity]@0#96631 cornerRadius=0.000000
+I/SurfaceView( 6442): 172936038 surfaceDestroyed
+I/SV[172936038 MainActivity]( 6442): surfaceDestroyed callback.size 1 #1 io.flutter.embedding.android.FlutterSurfaceView{a4ecb66 V.E...... ........ 0,0-1080,2316}
+I/SV[172936038 MainActivity]( 6442): updateSurface: mVisible = false mSurface.isValid() = true
+I/SV[172936038 MainActivity]( 6442): releaseSurfaces: viewRoot = VRI[MainActivity]@4d77125
+V/SurfaceView( 6442): Layout: x=0 y=0 w=1080 h=2316, frame=Rect(0, 0 - 1080, 2316)
+D/SV[172936038 MainActivity]( 6442): updateSurface: surface is not valid
+I/SV[172936038 MainActivity]( 6442): releaseSurfaces: viewRoot = VRI[MainActivity]@4d77125
+I/SV[172936038 MainActivity]( 6442): onWindowVisibilityChanged(4) false io.flutter.embedding.android.FlutterSurfaceView{a4ecb66 G.E...... ......I. 0,0-1080,2316} of VRI[MainActivity]@4d77125
+D/SV[172936038 MainActivity]( 6442): updateSurface: surface is not valid
+I/SV[172936038 MainActivity]( 6442): releaseSurfaces: viewRoot = VRI[MainActivity]@4d77125
+D/HWUI    ( 6442): CacheManager::trimMemory(20)
+I/VRI[MainActivity]@4d77125( 6442): Relayout returned: old=(0,0,1080,2316) new=(0,0,1080,2316) relayoutAsync=false req=(1080,2316)4 dur=15 res=0x2 s={false 0x0} ch=false seqId=0
+D/SV[172936038 MainActivity]( 6442): updateSurface: surface is not valid
+I/SV[172936038 MainActivity]( 6442): releaseSurfaces: viewRoot = VRI[MainActivity]@4d77125
+D/VRI[MainActivity]@4d77125( 6442): applyTransactionOnDraw applyImmediately
+D/VRI[MainActivity]@4d77125( 6442): Not drawing due to not visible. Reason=View.INVISIBLE
+D/VRI[MainActivity]@4d77125( 6442): Pending transaction will not be applied in sync with a draw due to view not visible
+I/VRI[MainActivity]@4d77125( 6442): mWNT: t=0xb400007182682610 mBlastBufferQueue=0xnull fn= 0 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl.handleSyncRequestWhenNoAsyncDraw:6733 android.view.ViewRootImpl.performTraversals:5504 android.view.ViewRootImpl.doTraversal:3924 
+D/HWUI    ( 6442): CacheManager::trimMemory(20)
+D/InputTransport( 6442): Input channel destroyed: 'ClientS', fd=182
+I/VRI[MainActivity]@4d77125( 6442): handleAppVisibility mAppVisible = true visible = false
+D/BBA2    ( 6442): setIsFg isFg = false; delayValue 3999ms
+Lost connection to device.

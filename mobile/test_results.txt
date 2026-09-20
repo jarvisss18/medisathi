@@ -1,0 +1,44 @@
+﻿00:00 +0: loading C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart
+00:00 +0: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Hue Distance Tests Calculates simple hue distance
+00:00 +1: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Hue Distance Tests Handles circular 360-degree wrap around correctly
+00:00 +2: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Match Score & Fallback Tests Returns 1.0 neutral score when gate is disabled
+00:00 +3: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Match Score & Fallback Tests Returns 1.0 neutral score when reference is uncalibrated
+00:00 +4: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Match Score & Fallback Tests Computes high score for matching calibrated hue
+00:00 +5: C:/hackthon/Musa Codex/MVP/mobile/test/color_extractor_test.dart: ColorExtractor Image Extraction Tests Extracts dominant blue HSV from solid blue image
+00:00 +6: C:/hackthon/Musa Codex/MVP/mobile/test/confidence_gate_test.dart: ConfidenceGate Safety Rule Tests TEST-001: Clear Paracetamol 500 mg image produces MATCH decision
+00:00 +7: C:/hackthon/Musa Codex/MVP/mobile/test/confidence_gate_test.dart: ConfidenceGate Safety Rule Tests TEST-002: Quality Check Failure forces REVIEW state (Don't Guess)
+00:00 +8: C:/hackthon/Musa Codex/MVP/mobile/test/confidence_gate_test.dart: ConfidenceGate Safety Rule Tests TEST-003: Look-alike medicine with missing strength forces REVIEW
+00:00 +9: C:/hackthon/Musa Codex/MVP/mobile/test/confidence_gate_test.dart: ConfidenceGate Safety Rule Tests TEST-004: Unrecognized non-medicine text produces REJECT state
+00:01 +10: C:/hackthon/Musa Codex/MVP/mobile/test/motion_gate_test.dart: MotionGateController Tests Initial state is steady (safe fallback)
+00:01 +11: C:/hackthon/Musa Codex/MVP/mobile/test/motion_gate_test.dart: MotionGateController Tests stopListening handles uninitialized state gracefully
+00:01 +12: C:/hackthon/Musa Codex/MVP/mobile/test/motion_gate_test.dart: BurstCaptureController Tests Initial state is not capturing with zero progress
+00:01 +13: C:/hackthon/Musa Codex/MVP/mobile/test/motion_gate_test.dart: BurstCaptureController Tests reset clears progress
+00:01 +14: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: RegexTokenParser Tests Extracts strength correctly from various formats
+00:01 +15: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: RegexTokenParser Tests Extracts batch number correctly
+00:01 +16: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: RegexTokenParser Tests Extracts expiry date correctly
+00:01 +17: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: RegexTokenParser Tests Tokenizes raw text into normalized lowercase tokens
+00:01 +18: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: OcrEngine Multi-Frame Voting Tests Single frame parsing extracts strength and tokens
+00:01 +19: C:/hackthon/Musa Codex/MVP/mobile/test/ocr_parser_test.dart: OcrEngine Multi-Frame Voting Tests Multi-frame voting resolves majority strength across 3 frames
+00:01 +20: C:/hackthon/Musa Codex/MVP/mobile/test/quality_checker_test.dart: QualityChecker Tests High-contrast sharp checkerboard image passes quality checks
+00:01 +21: C:/hackthon/Musa Codex/MVP/mobile/test/quality_checker_test.dart: QualityChecker Tests Solid uniform gray image fails blur check (low Laplacian variance)
+00:01 +22: C:/hackthon/Musa Codex/MVP/mobile/test/quality_checker_test.dart: QualityChecker Tests Overexposed all-white image fails glare and brightness check
+00:01 +23: C:/hackthon/Musa Codex/MVP/mobile/test/quality_checker_test.dart: QualityChecker Tests Underexposed dark image fails brightness check
+00:03 +24 -1: loading C:/hackthon/Musa Codex/MVP/mobile/test/widget_test.dart [E]
+  Failed to load "C:/hackthon/Musa Codex/MVP/mobile/test/widget_test.dart":
+  Compilation failed for testPath=C:/hackthon/Musa Codex/MVP/mobile/test/widget_test.dart: lib/features/verification/verification_result_screen.dart:670:20: Error: Can't find ')' to match '('.
+        return Column(
+                     ^
+  lib/features/verification/verification_result_screen.dart:863:3: Error: Expected a declaration, but got '}'.
+    }
+    ^
+  lib/features/verification/verification_result_screen.dart:864:1: Error: Expected a declaration, but got '}'.
+  }
+  ^
+  lib/features/verification/verification_result_screen.dart:699:10: Error: Expected ';' after this.
+          ],
+           ^
+  .
+00:03 +24 -1: Some tests failed.
+
+Failing tests:
+  C:/hackthon/Musa Codex/MVP/mobile/test/widget_test.dart: loading C:/hackthon/Musa Codex/MVP/mobile/test/widget_test.dart

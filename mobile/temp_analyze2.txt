@@ -1,0 +1,31 @@
+Analyzing mobile...                                             
+
+warning - The value of the local variable 'ocrKeywords' isn't used. Try removing the variable or using it - lib\core\gate\confidence_gate.dart:111:13 - unused_local_variable
+  error - The body might complete normally, causing 'null' to be returned, but the return type, 'Widget', is a potentially non-nullable type. Try adding either a return or a throw statement at the end - lib\features\verification\verification_result_screen.dart:668:10 - body_might_complete_normally
+warning - Dead code. Try removing the code, or fixing the code before it so that it can be reached - lib\features\verification\verification_result_screen.dart:701:11 - dead_code
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:710:11 - expected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:710:12 - missing_identifier
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:710:12 - unexpected_token
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:711:36 - expected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:711:37 - missing_identifier
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:711:37 - unexpected_token
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:721:11 - expected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:721:12 - missing_identifier
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:721:12 - unexpected_token
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:722:36 - expected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:722:37 - missing_identifier
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:722:37 - unexpected_token
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:732:11 - expected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:732:12 - missing_identifier
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:732:12 - expected_token
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:732:12 - unexpected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:733:9 - missing_identifier
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:733:9 - expected_token
+  error - Unexpected text ']'. Try removing the text - lib\features\verification\verification_result_screen.dart:733:9 - unexpected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:733:10 - missing_identifier
+  error - Expected to find ';' - lib\features\verification\verification_result_screen.dart:733:10 - expected_token
+  error - Unexpected text ','. Try removing the text - lib\features\verification\verification_result_screen.dart:733:10 - unexpected_token
+  error - Expected an identifier - lib\features\verification\verification_result_screen.dart:734:7 - missing_identifier
+  error - Unexpected text ')'. Try removing the text - lib\features\verification\verification_result_screen.dart:734:7 - unexpected_token
+   info - Unnecessary empty statement. Try removing the empty statement or restructuring the code - lib\features\verification\verification_result_screen.dart:734:8 - empty_statements
+
