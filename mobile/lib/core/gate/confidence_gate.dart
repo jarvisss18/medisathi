@@ -107,39 +107,129 @@ class ConfidenceGate {
 
     for (final med in medicinesCatalog) {
       final canonical = (med['canonical_name'] as String).toLowerCase();
-      final aliases = (med['aliases'] as List).map((a) => a.toString().toLowerCase()).toList();
-      final ocrKeywords = (med['ocr_keywords'] as List).map((k) => k.toString().toLowerCase()).toList();
+      final brand = (med['brand_name'] as String? ?? '').toLowerCase();
+      final aliases = (med['aliases'] as List?)
+              ?.map((a) => a.toString().toLowerCase())
+              .toList() ??
+          [];
+      final ocrKeywords = (med['ocr_keywords'] as List?)
+              ?.map((k) => k.toString().toLowerCase())
+              .toList() ??
+          [];
       final strength = (med['strength'] as String).toLowerCase();
 
-      // Check name match
+      final rawTextLower = ocrResult.rawText.toLowerCase();
+
+      // ── Name matching (canonical name, brand name, aliases, OCR keywords) ──
       bool nameMatched = false;
-      for (final token in ocrResult.tokens) {
-        if (token == canonical || aliases.contains(token) || ocrKeywords.contains(token)) {
-          nameMatched = true;
-          break;
+      double nameScore = 0.0;
+
+      // 1. Full canonical name or brand name present in raw text
+      if (rawTextLower.contains(canonical) || (brand.isNotEmpty && rawTextLower.contains(brand))) {
+        nameMatched = true;
+        nameScore = 1.0;
+      } else {
+        // 2. Any alias present in raw text (e.g. brand name, INN variant)
+        for (final alias in aliases) {
+          if (alias.isNotEmpty && rawTextLower.contains(alias)) {
+            nameMatched = true;
+            nameScore = 0.95;
+            break;
+          }
+        }
+      }
+
+      // 3. OCR keywords matching
+      if (!nameMatched) {
+        for (final kw in ocrKeywords) {
+          if (kw.length >= 3 && rawTextLower.contains(kw)) {
+            nameMatched = true;
+            nameScore = 0.85;
+            break;
+          }
+        }
+      }
+
+      // 4. Token-level partial match (tokens >= 3 chars)
+      if (!nameMatched) {
+        for (final token in ocrResult.tokens) {
+          final t = token.toLowerCase();
+          if (t.length >= 3) {
+            if (canonical.contains(t) || t.contains(canonical) || (brand.isNotEmpty && (brand.contains(t) || t.contains(brand)))) {
+              nameMatched = true;
+              nameScore = 0.75;
+              break;
+            }
+            for (final alias in aliases) {
+              if (alias.length >= 3 && (alias.contains(t) || t.contains(alias))) {
+                nameMatched = true;
+                nameScore = 0.70;
+                break;
+              }
+            }
+          }
+          if (nameMatched) break;
+        }
+      }
+
+      // 5. Fuzzy Levenshtein matching for OCR typos
+      if (!nameMatched) {
+        for (final token in ocrResult.tokens) {
+          final t = token.toLowerCase();
+          if (t.length >= 4) {
+            if (_similarityScore(t, canonical) >= 0.75 || (brand.isNotEmpty && _similarityScore(t, brand) >= 0.75)) {
+              nameMatched = true;
+              nameScore = 0.80;
+              break;
+            }
+            for (final alias in aliases) {
+              if (alias.length >= 4 && _similarityScore(t, alias) >= 0.75) {
+                nameMatched = true;
+                nameScore = 0.75;
+                break;
+              }
+            }
+          }
+          if (nameMatched) break;
         }
       }
 
       if (!nameMatched) continue;
 
-      // Check strength match
-      final extractedStrength = ocrResult.extractedStrength?.toLowerCase();
-      bool strengthMatched = extractedStrength != null && (extractedStrength == strength || ocrResult.rawText.toLowerCase().contains(strength));
+      // ── Strength matching (universal for 1mg, 2mg, 5mg, 10mg, 20mg, 40mg, 50mg, 75mg, 150mg, 400mg, 500mg, 650mg, 850mg) ──
+      final strengthDigits = strength.replaceAll(RegExp(r'[^0-9]'), '');
+      final compactStrength = strength.replaceAll(' ', '');
+      final compactRaw = rawTextLower.replaceAll(' ', '');
 
-      double nameScore = 0.50;
-      double strScore = strengthMatched ? 0.30 : 0.0;
-      
-      // Color score
-      double colorScore = 1.0;
-      if (colorGateEnabled && colorSignature != null) {
-        colorScore = ColorExtractor.computeColorMatchScore(
-          extracted: colorSignature,
-          referenceConfig: med['color_signature'],
-          gateEnabled: colorGateEnabled,
-        );
+      bool strengthMatched = false;
+      double strScore = 0.0;
+
+      // 1. Exact strength string in raw text (e.g. "5 mg" or "5mg" or "10 mg")
+      if (rawTextLower.contains(strength) || compactRaw.contains(compactStrength)) {
+        strengthMatched = true;
+        strScore = 0.30;
+      }
+      // 2. Extracted strength from OCR parser matches
+      else if (ocrResult.extractedStrength != null) {
+        final extractedDigits = ocrResult.extractedStrength!.replaceAll(RegExp(r'[^0-9]'), '');
+        if (extractedDigits == strengthDigits) {
+          strengthMatched = true;
+          strScore = 0.25;
+        }
+      }
+      // 3. Digit match with unit or boundary check in raw text
+      else if (strengthDigits.isNotEmpty) {
+        final regexPattern = RegExp(r'(?:^|\b|_|\s)' + RegExp.escape(strengthDigits) + r'(?:\s*mg|\s*g|\s*mcg|\b|\s)', caseSensitive: false);
+        if (regexPattern.hasMatch(rawTextLower) || compactRaw.contains('${strengthDigits}mg')) {
+          strengthMatched = true;
+          strScore = 0.20;
+        }
       }
 
-      double totalScore = nameScore + strScore + (0.20 * colorScore);
+      // Total score: name quality + strength bonus
+      // A name-only match scores min 0.75 (or 0.80/0.95/1.0).
+      // A name+strength match adds 0.20-0.30 -> verified match
+      final totalScore = nameScore + strScore;
 
       if (totalScore > maxMatchScore) {
         maxMatchScore = totalScore;
@@ -164,26 +254,29 @@ class ConfidenceGate {
     final lookalikeGroupId = bestCandidate['lookalike_group_id'];
 
     // Hard Safety Rule C: Look-alike group + missing strength -> FORCE REVIEW
+    // Only force review if multiple candidates exist in the catalog for the same lookalike group
     if (lookalikeGroupId != null && !hasStrengthMatch) {
       final candidatesInGroup = medicinesCatalog
           .where((m) => m['lookalike_group_id'] == lookalikeGroupId)
           .map((m) => "${m['canonical_name']} ${m['strength']}")
           .toList();
 
-      return VerificationDecision(
-        state: GateDecisionState.review,
-        matchedMedicineId: bestCandidate['medicine_id'],
-        matchedCanonicalName: bestCandidate['canonical_name'],
-        matchedBrandName: bestCandidate['brand_name'],
-        confidenceScore: maxMatchScore,
-        reasonCode: "LOOKALIKE_AMBIGUITY_STRENGTH_MISSING",
-        userMessageEn: "Similar medicine detected (${bestCandidate['canonical_name']}), but strength (mg) is unclear. Please check strength carefully.",
-        userMessageHi: "समान दवा (${bestCandidate['canonical_name']}) मिली, लेकिन पावर (mg) स्पष्ट नहीं है। कृपया mg ध्यान से देखें।",
-        userMessageMr: "सारखे औषध (${bestCandidate['canonical_name']}) आढळले, पण पॉवर (mg) स्पष्ट नाही. कृपया पॉवर काळजीपूर्वक तपासा.",
-        qualityResult: qualityResult,
-        ocrResult: ocrResult,
-        lookalikeCandidates: candidatesInGroup,
-      );
+      if (candidatesInGroup.length > 1) {
+        return VerificationDecision(
+          state: GateDecisionState.review,
+          matchedMedicineId: bestCandidate['medicine_id'],
+          matchedCanonicalName: bestCandidate['canonical_name'],
+          matchedBrandName: bestCandidate['brand_name'],
+          confidenceScore: maxMatchScore,
+          reasonCode: "LOOKALIKE_AMBIGUITY_STRENGTH_MISSING",
+          userMessageEn: "Similar medicine detected (${bestCandidate['canonical_name']}), but strength (mg) is unclear. Please check strength carefully.",
+          userMessageHi: "समान दवा (${bestCandidate['canonical_name']}) मिली, लेकिन पावर (mg) स्पष्ट नहीं है। कृपया mg ध्यान से देखें।",
+          userMessageMr: "सारखे औषध (${bestCandidate['canonical_name']}) आढळले, पण पॉवर (mg) स्पष्ट नाही. कृपया पॉवर काळजीपूर्वक तपासा.",
+          qualityResult: qualityResult,
+          ocrResult: ocrResult,
+          lookalikeCandidates: candidatesInGroup,
+        );
+      }
     }
 
     // Hard Safety Rule D: Threshold gate evaluation
@@ -228,5 +321,33 @@ class ConfidenceGate {
         ocrResult: ocrResult,
       );
     }
+  }
+
+  double _similarityScore(String s1, String s2) {
+    if (s1.isEmpty || s2.isEmpty) return 0.0;
+    final dist = _editDistance(s1, s2);
+    final maxLen = s1.length > s2.length ? s1.length : s2.length;
+    return 1.0 - (dist / maxLen);
+  }
+
+  int _editDistance(String s1, String s2) {
+    if (s1 == s2) return 0;
+    if (s1.isEmpty) return s2.length;
+    if (s2.isEmpty) return s1.length;
+
+    List<int> v0 = List<int>.generate(s2.length + 1, (i) => i);
+    List<int> v1 = List<int>.filled(s2.length + 1, 0);
+
+    for (int i = 0; i < s1.length; i++) {
+      v1[0] = i + 1;
+      for (int j = 0; j < s2.length; j++) {
+        int cost = (s1[i] == s2[j]) ? 0 : 1;
+        v1[j + 1] = [v1[j] + 1, v0[j + 1] + 1, v0[j] + cost].reduce((a, b) => a < b ? a : b);
+      }
+      for (int j = 0; j <= s2.length; j++) {
+        v0[j] = v1[j];
+      }
+    }
+    return v1[s2.length];
   }
 }

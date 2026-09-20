@@ -18,19 +18,41 @@ class SavedMedicinesNotifier extends Notifier<List<SavedMedicine>> {
   @override
   List<SavedMedicine> build() {
     final repo = ref.watch(medicineRepositoryProvider);
-    return repo.savedMedicines;
+    void listener() {
+      state = List.from(repo.savedMedicines);
+    }
+    repo.addListener(listener);
+    ref.onDispose(() => repo.removeListener(listener));
+    return List.from(repo.savedMedicines);
   }
 
   void add(SavedMedicine med) {
     final repo = ref.read(medicineRepositoryProvider);
     repo.addSavedMedicine(med);
-    state = List.from(repo.savedMedicines);
+  }
+
+  void addCustom({
+    required String name,
+    required String brand,
+    required String strength,
+    required String dosageForm,
+    required String timing,
+    required String usageInstruction,
+  }) {
+    final repo = ref.read(medicineRepositoryProvider);
+    repo.addCustomMedicine(
+      name: name,
+      brand: brand,
+      strength: strength,
+      dosageForm: dosageForm,
+      timing: timing,
+      usageInstruction: usageInstruction,
+    );
   }
 
   void remove(String id) {
     final repo = ref.read(medicineRepositoryProvider);
     repo.removeSavedMedicine(id);
-    state = List.from(repo.savedMedicines);
   }
 }
 
@@ -40,25 +62,32 @@ class RemindersNotifier extends Notifier<List<ReminderItem>> {
   @override
   List<ReminderItem> build() {
     final repo = ref.watch(medicineRepositoryProvider);
-    return repo.reminders;
+    void listener() {
+      state = List.from(repo.reminders);
+    }
+    repo.addListener(listener);
+    ref.onDispose(() => repo.removeListener(listener));
+    return List.from(repo.reminders);
+  }
+
+  void refresh() {
+    final repo = ref.read(medicineRepositoryProvider);
+    state = List.from(repo.reminders);
   }
 
   void add(ReminderItem item) {
     final repo = ref.read(medicineRepositoryProvider);
     repo.addReminder(item);
-    state = List.from(repo.reminders);
   }
 
   void toggle(String id, bool enabled) {
     final repo = ref.read(medicineRepositoryProvider);
     repo.toggleReminder(id, enabled);
-    state = List.from(repo.reminders);
   }
 
   void delete(String id) {
     final repo = ref.read(medicineRepositoryProvider);
     repo.deleteReminder(id);
-    state = List.from(repo.reminders);
   }
 }
 

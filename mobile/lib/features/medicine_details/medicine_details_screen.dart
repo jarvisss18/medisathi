@@ -36,6 +36,14 @@ class _MedicineDetailsScreenState extends ConsumerState<MedicineDetailsScreen> {
     });
   }
 
+  void _handleBack(BuildContext context) {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/home');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final extra = GoRouterState.of(context).extra as Map<String, dynamic>?;
@@ -48,13 +56,24 @@ class _MedicineDetailsScreenState extends ConsumerState<MedicineDetailsScreen> {
     final catalogEntry = repo.findCatalogEntry(medicineId);
     final usageInfo = catalogEntry?['instruction_text'] as String? ?? 'High blood pressure & cardiovascular protection';
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
-        title: const Text('Medicine Details'),
-        backgroundColor: const Color(0xFF1E6FE8),
-        foregroundColor: Colors.white,
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        _handleBack(context);
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8FAFC),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => _handleBack(context),
+            tooltip: 'Back',
+          ),
+          title: const Text('Medicine Details'),
+          backgroundColor: const Color(0xFF1E6FE8),
+          foregroundColor: Colors.white,
+        ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -174,7 +193,7 @@ class _MedicineDetailsScreenState extends ConsumerState<MedicineDetailsScreen> {
                     ),
                   );
 
-                  context.go('/my-medicines');
+                  context.push('/my-medicines');
                 },
                 icon: const Icon(Icons.add_task, size: 24),
                 label: const Text('ADD TO MY MEDICINES', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -209,7 +228,8 @@ class _MedicineDetailsScreenState extends ConsumerState<MedicineDetailsScreen> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildInteractionCard(String name) {

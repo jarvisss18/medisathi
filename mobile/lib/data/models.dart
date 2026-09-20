@@ -84,6 +84,26 @@ class ReminderItem {
       isEnabled: isEnabled ?? this.isEnabled,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'medicineId': medicineId,
+        'medicineName': medicineName,
+        'doseText': doseText,
+        'timeOfDay': timeOfDay,
+        'repeatOption': repeatOption,
+        'isEnabled': isEnabled,
+      };
+
+  factory ReminderItem.fromJson(Map<String, dynamic> json) => ReminderItem(
+        id: json['id'],
+        medicineId: json['medicineId'],
+        medicineName: json['medicineName'],
+        doseText: json['doseText'] ?? '1 Tablet',
+        timeOfDay: json['timeOfDay'] ?? '08:00',
+        repeatOption: json['repeatOption'] ?? 'Daily',
+        isEnabled: json['isEnabled'] ?? true,
+      );
 }
 
 enum DoseStatus { taken, missed, skipped }
@@ -104,6 +124,27 @@ class DoseLog {
     required this.status,
     required this.actedAt,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'reminderId': reminderId,
+        'medicineName': medicineName,
+        'scheduledAt': scheduledAt,
+        'status': status.name,
+        'actedAt': actedAt,
+      };
+
+  factory DoseLog.fromJson(Map<String, dynamic> json) => DoseLog(
+        id: json['id'],
+        reminderId: json['reminderId'],
+        medicineName: json['medicineName'],
+        scheduledAt: json['scheduledAt'],
+        status: DoseStatus.values.firstWhere(
+          (e) => e.name == json['status'],
+          orElse: () => DoseStatus.taken,
+        ),
+        actedAt: json['actedAt'],
+      );
 }
 
 class InteractionRule {
@@ -158,4 +199,22 @@ class CaregiverEvent {
     required this.note,
     this.isSimulated = true,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'timestamp': timestamp.toIso8601String(),
+        'eventType': eventType,
+        'medicineName': medicineName,
+        'note': note,
+        'isSimulated': isSimulated,
+      };
+
+  factory CaregiverEvent.fromJson(Map<String, dynamic> json) => CaregiverEvent(
+        id: json['id'],
+        timestamp: DateTime.parse(json['timestamp']),
+        eventType: json['eventType'],
+        medicineName: json['medicineName'],
+        note: json['note'],
+        isSimulated: json['isSimulated'] ?? true,
+      );
 }

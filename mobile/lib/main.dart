@@ -4,9 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/router.dart';
 import 'app/theme.dart';
+import 'core/notifications/notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize notification service and request permissions on startup.
+  await NotificationService().init();
+
+  // When user taps a system notification, open the Reminders screen.
+  NotificationService.onNotificationTap = (payload) {
+    appRouter.go('/reminders');
+  };
+
   runApp(
     const ProviderScope(
       child: MediSathiApp(),

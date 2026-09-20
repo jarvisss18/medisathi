@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../core/csv/csv_parser.dart';
 import 'models.dart';
 
-class MedicineRepository {
+class MedicineRepository extends ChangeNotifier {
   List<Map<String, dynamic>> _catalog = [];
   List<InteractionRule> _interactionRules = [];
   final List<SavedMedicine> _savedMedicines = [];
@@ -16,14 +19,26 @@ class MedicineRepository {
     if (_isInitialized) return;
 
     try {
-      final catalogStr = await rootBundle.loadString('assets/data/medicines.json');
-      _catalog = List<Map<String, dynamic>>.from(jsonDecode(catalogStr));
+      // 1. Primary catalog: Load offline CSV file
+      final csvStr = await rootBundle.loadString('assets/data/medicines.csv');
+      _catalog = CsvParser.parseMedicineCatalogCsv(csvStr);
+    } catch (_) {
+      try {
+        // Fallback: Load JSON catalog if CSV is unavailable
+        final catalogStr = await rootBundle.loadString('assets/data/medicines.json');
+        _catalog = List<Map<String, dynamic>>.from(jsonDecode(catalogStr));
+      } catch (_) {
+        _catalog = [];
+      }
+    }
 
+    try {
       final rulesStr = await rootBundle.loadString('assets/data/interaction_rules.json');
       final rulesJson = jsonDecode(rulesStr) as List;
       _interactionRules = rulesJson.map((r) => InteractionRule.fromJson(r)).toList();
-    } catch (_) {
-      // Fallback mock catalog if assets fail in headless environment
+    } catch (_) {}
+
+    if (_catalog.isEmpty) {
       _catalog = [
         {
           "medicine_id": "MED-001",
@@ -122,14 +137,80 @@ class MedicineRepository {
       ];
     }
 
-    _loadSeedData();
+    await _loadFromPrefs();
     _isInitialized = true;
+    notifyListeners();
+  }
+
+  Future<void> _loadFromPrefs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // v2 key: forces a clean re-seed on existing installs to clear stale/duplicated reminders.
+      final hasInitialized = prefs.getBool('has_initialized_seed_data_v2') ?? false;
+
+      if (!hasInitialized) {
+        // Clear any old data from previous app versions.
+        await prefs.remove('saved_medicines');
+        await prefs.remove('reminders');
+        _loadSeedData();
+        await prefs.setBool('has_initialized_seed_data_v2', true);
+        await _saveToPrefs();
+        return;
+      }
+
+      final savedMedsJson = prefs.getString('saved_medicines');
+      if (savedMedsJson != null) {
+        final List list = jsonDecode(savedMedsJson);
+        _savedMedicines.clear();
+        _savedMedicines.addAll(list.map((m) => SavedMedicine.fromJson(m)));
+      }
+
+      final remindersJson = prefs.getString('reminders');
+      if (remindersJson != null) {
+        final List list = jsonDecode(remindersJson);
+        _reminders.clear();
+        _reminders.addAll(list.map((r) => ReminderItem.fromJson(r)));
+      }
+
+      final logsJson = prefs.getString('dose_logs');
+      if (logsJson != null) {
+        final List list = jsonDecode(logsJson);
+        _doseLogs.clear();
+        _doseLogs.addAll(list.map((l) => DoseLog.fromJson(l)));
+      }
+
+      final cgJson = prefs.getString('caregiver_events');
+      if (cgJson != null) {
+        final List list = jsonDecode(cgJson);
+        _caregiverEvents.clear();
+        _caregiverEvents.addAll(list.map((e) => CaregiverEvent.fromJson(e)));
+      }
+    } catch (_) {
+      // Retain current state gracefully
+    }
+  }
+
+
+  Future<void> _saveToPrefs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final medsJson = jsonEncode(_savedMedicines.map((m) => m.toJson()).toList());
+      await prefs.setString('saved_medicines', medsJson);
+
+      final remsJson = jsonEncode(_reminders.map((r) => r.toJson()).toList());
+      await prefs.setString('reminders', remsJson);
+
+      final logsJson = jsonEncode(_doseLogs.map((l) => l.toJson()).toList());
+      await prefs.setString('dose_logs', logsJson);
+
+      final cgJson = jsonEncode(_caregiverEvents.map((e) => e.toJson()).toList());
+      await prefs.setString('caregiver_events', cgJson);
+    } catch (_) {}
   }
 
   void _loadSeedData() {
     if (_savedMedicines.isNotEmpty) return;
 
-    // Seed Mrs. Sunanda Patil's 6 daily medicines
     final seeds = [
       {'id': 'MED-003', 'name': 'Amlodipine', 'brand': 'Amlokind', 'str': '5 mg', 'time': '08:00', 'timing': 'After food'},
       {'id': 'MED-005', 'name': 'Metformin', 'brand': 'Glycomet', 'str': '500 mg', 'time': '09:00', 'timing': 'After food'},
@@ -154,6 +235,7 @@ class MedicineRepository {
         addedAt: DateTime.now().toIso8601String(),
       ));
 
+      // Seed reminder uses standardized 24h HH:mm format.
       _reminders.add(ReminderItem(
         id: 'REM-${i + 1}',
         medicineId: s['id']!,
@@ -177,28 +259,94 @@ class MedicineRepository {
   List<CaregiverEvent> get caregiverEvents => List.unmodifiable(_caregiverEvents);
 
   void addSavedMedicine(SavedMedicine med) {
-    _savedMedicines.removeWhere((m) => m.medicineId == med.medicineId);
+    _savedMedicines.removeWhere((m) => m.medicineId == med.medicineId || m.id == med.id);
     _savedMedicines.add(med);
+    // NOTE: We do NOT auto-create a reminder here.
+    // Reminders are only created when the user explicitly sets one via SetReminderScreen.
+    _saveToPrefs();
+    notifyListeners();
+  }
+
+  void addCustomMedicine({
+    required String name,
+    required String brand,
+    required String strength,
+    required String dosageForm,
+    required String timing,
+    required String usageInstruction,
+  }) {
+    final newId = 'CUSTOM-${DateTime.now().millisecondsSinceEpoch}';
+    final customMed = SavedMedicine(
+      id: newId,
+      medicineId: newId,
+      canonicalName: name,
+      brandName: brand.isNotEmpty ? brand : 'Generic',
+      strength: strength,
+      dosageForm: dosageForm,
+      usageInstruction: usageInstruction,
+      timing: timing,
+      addedAt: DateTime.now().toIso8601String(),
+    );
+    _savedMedicines.add(customMed);
+    // NOTE: No auto-reminder here — prevents the double-reminder bug.
+    // The caller (SetReminderScreen) explicitly adds the reminder with the
+    // user-selected time after calling this method.
+
+    // Register custom med into catalog so OCR and details screen can resolve it.
+    _catalog.add({
+      "medicine_id": newId,
+      "canonical_name": name,
+      "brand_name": brand.isNotEmpty ? brand : 'Generic',
+      "aliases": [name.toLowerCase(), brand.toLowerCase()],
+      "strength": strength,
+      "dosage_form": dosageForm,
+      "instruction_text": usageInstruction,
+      "color_signature": {"calibrated": false},
+    });
+
+    _saveToPrefs();
+    notifyListeners();
   }
 
   void removeSavedMedicine(String id) {
+    final target = _savedMedicines.where((m) => m.id == id || m.medicineId == id).firstOrNull;
     _savedMedicines.removeWhere((m) => m.id == id || m.medicineId == id);
+
+    if (target != null) {
+      final targetName = target.canonicalName.toLowerCase();
+      _reminders.removeWhere((r) =>
+        r.medicineId == id ||
+        r.medicineId == target.medicineId ||
+        r.medicineName.toLowerCase().contains(targetName)
+      );
+    } else {
+      _reminders.removeWhere((r) => r.medicineId == id);
+    }
+
+    _saveToPrefs();
+    notifyListeners();
   }
 
   void addReminder(ReminderItem reminder) {
     _reminders.removeWhere((r) => r.id == reminder.id);
     _reminders.add(reminder);
+    _saveToPrefs();
+    notifyListeners();
   }
 
   void toggleReminder(String id, bool enabled) {
     final idx = _reminders.indexWhere((r) => r.id == id);
     if (idx != -1) {
       _reminders[idx] = _reminders[idx].copyWith(isEnabled: enabled);
+      _saveToPrefs();
+      notifyListeners();
     }
   }
 
   void deleteReminder(String id) {
     _reminders.removeWhere((r) => r.id == id);
+    _saveToPrefs();
+    notifyListeners();
   }
 
   void markDoseStatus(String reminderId, String medicineName, DoseStatus status) {
@@ -220,10 +368,14 @@ class MedicineRepository {
         note: 'Missed scheduled dose beyond 30-minute grace window.',
       ));
     }
+    _saveToPrefs();
+    notifyListeners();
   }
 
   void addCaregiverEvent(CaregiverEvent event) {
     _caregiverEvents.add(event);
+    _saveToPrefs();
+    notifyListeners();
   }
 
   /// Checks if candidate medicine interacts with any currently saved medicines
@@ -240,8 +392,7 @@ class MedicineRepository {
 
       if (candidateMatchesA || candidateMatchesB) {
         final otherDrug = candidateMatchesA ? drugB : drugA;
-        
-        // Check if other drug is in saved medicines
+
         final isOtherSaved = _savedMedicines.any(
           (m) => m.canonicalName.toLowerCase().contains(otherDrug) || m.brandName.toLowerCase().contains(otherDrug),
         );
@@ -249,6 +400,26 @@ class MedicineRepository {
         if (isOtherSaved) {
           results.add(rule);
         }
+      }
+    }
+    return results;
+  }
+
+  /// Check interaction between any 2 arbitrary drugs directly
+  List<InteractionRule> checkInteractionBetweenTwoDrugs(String drug1, String drug2) {
+    final results = <InteractionRule>[];
+    final norm1 = drug1.toLowerCase();
+    final norm2 = drug2.toLowerCase();
+
+    for (final rule in _interactionRules) {
+      final rA = rule.drugA.toLowerCase();
+      final rB = rule.drugB.toLowerCase();
+
+      bool pairMatch1 = (norm1.contains(rA) || rA.contains(norm1)) && (norm2.contains(rB) || rB.contains(norm2));
+      bool pairMatch2 = (norm1.contains(rB) || rB.contains(norm1)) && (norm2.contains(rA) || rA.contains(norm2));
+
+      if (pairMatch1 || pairMatch2) {
+        results.add(rule);
       }
     }
     return results;
@@ -262,3 +433,4 @@ class MedicineRepository {
     return null;
   }
 }
+
