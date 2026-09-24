@@ -238,6 +238,8 @@ class ConfidenceGate {
       }
     }
 
+    maxMatchScore = maxMatchScore.clamp(0.0, 1.0);
+
     if (bestCandidate == null) {
       return VerificationDecision(
         state: GateDecisionState.reject,

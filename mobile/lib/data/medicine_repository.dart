@@ -163,6 +163,21 @@ class MedicineRepository extends ChangeNotifier {
         final List list = jsonDecode(savedMedsJson);
         _savedMedicines.clear();
         _savedMedicines.addAll(list.map((m) => SavedMedicine.fromJson(m)));
+
+        for (final med in _savedMedicines) {
+          if (findCatalogEntry(med.medicineId) == null && findCatalogEntry(med.canonicalName) == null) {
+            _catalog.add({
+              "medicine_id": med.medicineId,
+              "canonical_name": med.canonicalName,
+              "brand_name": med.brandName.isNotEmpty ? med.brandName : 'Generic',
+              "aliases": [med.canonicalName.toLowerCase(), med.brandName.toLowerCase()],
+              "strength": med.strength,
+              "dosage_form": med.dosageForm,
+              "instruction_text": med.usageInstruction,
+              "color_signature": {"calibrated": false},
+            });
+          }
+        }
       }
 
       final remindersJson = prefs.getString('reminders');
@@ -267,15 +282,16 @@ class MedicineRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addCustomMedicine({
+  String addCustomMedicine({
     required String name,
     required String brand,
     required String strength,
     required String dosageForm,
     required String timing,
     required String usageInstruction,
+    String? customId,
   }) {
-    final newId = 'CUSTOM-${DateTime.now().millisecondsSinceEpoch}';
+    final newId = customId ?? 'CUSTOM-${DateTime.now().millisecondsSinceEpoch}';
     final customMed = SavedMedicine(
       id: newId,
       medicineId: newId,
@@ -306,6 +322,7 @@ class MedicineRepository extends ChangeNotifier {
 
     _saveToPrefs();
     notifyListeners();
+    return newId;
   }
 
   void removeSavedMedicine(String id) {

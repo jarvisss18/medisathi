@@ -31,22 +31,24 @@ class SavedMedicinesNotifier extends Notifier<List<SavedMedicine>> {
     repo.addSavedMedicine(med);
   }
 
-  void addCustom({
+  String addCustom({
     required String name,
     required String brand,
     required String strength,
     required String dosageForm,
     required String timing,
     required String usageInstruction,
+    String? customId,
   }) {
     final repo = ref.read(medicineRepositoryProvider);
-    repo.addCustomMedicine(
+    return repo.addCustomMedicine(
       name: name,
       brand: brand,
       strength: strength,
       dosageForm: dosageForm,
       timing: timing,
       usageInstruction: usageInstruction,
+      customId: customId,
     );
   }
 

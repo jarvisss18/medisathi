@@ -26,11 +26,12 @@ class NotificationService {
     // Set up the correct local timezone.
     tz.initializeTimeZones();
     try {
-      // flutter_timezone v5.x: TimezoneInfo.identifier holds the IANA tz string.
       final tzInfo = await FlutterTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(tzInfo.identifier));
     } catch (_) {
-      // Fallback – leave as UTC.
+      try {
+        tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
+      } catch (_) {}
     }
 
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');

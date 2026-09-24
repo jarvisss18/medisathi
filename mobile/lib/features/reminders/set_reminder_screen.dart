@@ -299,10 +299,7 @@ class _SetReminderScreenState extends ConsumerState<SetReminderScreen> {
                         return;
                       }
                       finalMedName = nameInput;
-                      finalMedId = 'CUSTOM-${DateTime.now().millisecondsSinceEpoch}';
-
-                      // Also add to saved medicines so it appears in My Medicines
-                      ref.read(savedMedicinesProvider.notifier).addCustom(
+                      finalMedId = ref.read(savedMedicinesProvider.notifier).addCustom(
                         name: finalMedName,
                         brand: 'Custom',
                         strength: _doseController.text.trim(),
