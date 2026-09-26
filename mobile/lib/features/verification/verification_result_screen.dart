@@ -406,6 +406,7 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
   }
 
   void _showCaregiverEscalationDialog() {
+    final caregiverName = ref.read(medicineRepositoryProvider).caregiverContact.name;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -417,9 +418,9 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
             Expanded(child: Text('2 Failed Scans Alert', style: TextStyle(fontSize: 20))),
           ],
         ),
-        content: const Text(
-          'MediSathi could not verify the medicine twice in a row. Would you like to contact or send an alert to caregiver Rahul?',
-          style: TextStyle(fontSize: 16),
+        content: Text(
+          'MediSathi could not verify the medicine twice in a row. Would you like to contact or send an alert to caregiver $caregiverName?',
+          style: const TextStyle(fontSize: 16),
         ),
         actions: [
           TextButton(
@@ -436,7 +437,7 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
               context.push('/caregiver');
             },
             icon: const Icon(Icons.send),
-            label: const Text('Contact Caregiver'),
+            label: Text('Contact $caregiverName'),
           ),
         ],
       ),
@@ -932,6 +933,7 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
   }
 
   Widget _buildCaregiverAlertCard(VerificationDecision decision) {
+    final caregiverName = ref.watch(medicineRepositoryProvider).caregiverContact.name;
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -952,9 +954,9 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'An unscheduled medicine scan event has been automatically logged for caregiver Rahul. If you were recently prescribed this, tap below to save it.',
-              style: TextStyle(fontSize: 14, color: Color(0xFF7C2D12)),
+            Text(
+              'An unscheduled medicine scan event has been automatically logged for caregiver $caregiverName. If you were recently prescribed this, tap below to save it.',
+              style: const TextStyle(fontSize: 14, color: Color(0xFF7C2D12)),
             ),
             const SizedBox(height: 14),
             ElevatedButton.icon(
@@ -965,7 +967,7 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
               ),
               onPressed: () => context.push('/caregiver'),
               icon: const Icon(Icons.send),
-              label: const Text('NOTIFY CAREGIVER RAHUL', style: TextStyle(fontWeight: FontWeight.bold)),
+              label: Text('NOTIFY CAREGIVER ${caregiverName.toUpperCase()}', style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),

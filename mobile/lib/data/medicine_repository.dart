@@ -12,6 +12,7 @@ class MedicineRepository extends ChangeNotifier {
   final List<ReminderItem> _reminders = [];
   final List<DoseLog> _doseLogs = [];
   final List<CaregiverEvent> _caregiverEvents = [];
+  CaregiverContact _caregiverContact = CaregiverContact();
 
   bool _isInitialized = false;
 
@@ -200,6 +201,11 @@ class MedicineRepository extends ChangeNotifier {
         _caregiverEvents.clear();
         _caregiverEvents.addAll(list.map((e) => CaregiverEvent.fromJson(e)));
       }
+
+      final contactJson = prefs.getString('caregiver_contact');
+      if (contactJson != null) {
+        _caregiverContact = CaregiverContact.fromJson(jsonDecode(contactJson));
+      }
     } catch (_) {
       // Retain current state gracefully
     }
@@ -220,6 +226,9 @@ class MedicineRepository extends ChangeNotifier {
 
       final cgJson = jsonEncode(_caregiverEvents.map((e) => e.toJson()).toList());
       await prefs.setString('caregiver_events', cgJson);
+
+      final contactJson = jsonEncode(_caregiverContact.toJson());
+      await prefs.setString('caregiver_contact', contactJson);
     } catch (_) {}
   }
 
@@ -272,6 +281,8 @@ class MedicineRepository extends ChangeNotifier {
   List<DoseLog> get doseLogs => List.unmodifiable(_doseLogs);
 
   List<CaregiverEvent> get caregiverEvents => List.unmodifiable(_caregiverEvents);
+
+  CaregiverContact get caregiverContact => _caregiverContact;
 
   void addSavedMedicine(SavedMedicine med) {
     _savedMedicines.removeWhere((m) => m.medicineId == med.medicineId || m.id == med.id);
@@ -391,6 +402,12 @@ class MedicineRepository extends ChangeNotifier {
 
   void addCaregiverEvent(CaregiverEvent event) {
     _caregiverEvents.add(event);
+    _saveToPrefs();
+    notifyListeners();
+  }
+
+  void updateCaregiverContact(CaregiverContact contact) {
+    _caregiverContact = contact;
     _saveToPrefs();
     notifyListeners();
   }

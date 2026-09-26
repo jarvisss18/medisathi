@@ -218,3 +218,58 @@ class CaregiverEvent {
         isSimulated: json['isSimulated'] ?? true,
       );
 }
+
+class CaregiverContact {
+  final String name;
+  final String phone;
+  final String relationship;
+  final bool alertOnScanFailures;
+  final bool alertOnMissedDoses;
+  final bool attachPhoto;
+
+  CaregiverContact({
+    this.name = 'Rahul Patil',
+    this.phone = '+919820012345',
+    this.relationship = 'Son',
+    this.alertOnScanFailures = true,
+    this.alertOnMissedDoses = true,
+    this.attachPhoto = false,
+  });
+
+  CaregiverContact copyWith({
+    String? name,
+    String? phone,
+    String? relationship,
+    bool? alertOnScanFailures,
+    bool? alertOnMissedDoses,
+    bool? attachPhoto,
+  }) {
+    return CaregiverContact(
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      relationship: relationship ?? this.relationship,
+      alertOnScanFailures: alertOnScanFailures ?? this.alertOnScanFailures,
+      alertOnMissedDoses: alertOnMissedDoses ?? this.alertOnMissedDoses,
+      attachPhoto: attachPhoto ?? this.attachPhoto,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'phone': phone,
+        'relationship': relationship,
+        'alertOnScanFailures': alertOnScanFailures,
+        'alertOnMissedDoses': alertOnMissedDoses,
+        'attachPhoto': attachPhoto,
+      };
+
+  factory CaregiverContact.fromJson(Map<String, dynamic> json) => CaregiverContact(
+        name: json['name'] ?? 'Rahul Patil',
+        phone: json['phone'] ?? '+919820012345',
+        relationship: json['relationship'] ?? 'Son',
+        alertOnScanFailures: json['alertOnScanFailures'] ?? true,
+        alertOnMissedDoses: json['alertOnMissedDoses'] ?? true,
+        attachPhoto: json['attachPhoto'] ?? false,
+      );
+}
+

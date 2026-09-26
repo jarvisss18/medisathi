@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/app_providers.dart';
+import '../../data/models.dart';
 
 class CaregiverScreen extends ConsumerStatefulWidget {
   const CaregiverScreen({super.key});
@@ -13,13 +14,28 @@ class CaregiverScreen extends ConsumerStatefulWidget {
 }
 
 class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
-  final _nameController = TextEditingController(text: 'Rahul Patil');
-  final _phoneController = TextEditingController(text: '+919820012345');
-  final _relationController = TextEditingController(text: 'Son');
+  late final TextEditingController _nameController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _relationController;
 
-  bool _shareScanAlerts = true;
-  bool _shareMissedDoses = true;
-  bool _includePhoto = false;
+  late bool _shareScanAlerts;
+  late bool _shareMissedDoses;
+  late bool _includePhoto;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialContact = ref.read(medicineRepositoryProvider).caregiverContact;
+    _nameController = TextEditingController(text: initialContact.name);
+    _phoneController = TextEditingController(text: initialContact.phone);
+    _relationController = TextEditingController(text: initialContact.relationship);
+
+    _shareScanAlerts = initialContact.alertOnScanFailures;
+    _shareMissedDoses = initialContact.alertOnMissedDoses;
+    _includePhoto = initialContact.attachPhoto;
+    _isInitialized = true;
+  }
 
   @override
   void dispose() {
@@ -34,6 +50,30 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
       context.pop();
     } else {
       context.go('/home');
+    }
+  }
+
+  void _saveContactDetails({bool showSnackBar = true}) {
+    final updated = CaregiverContact(
+      name: _nameController.text.trim().isNotEmpty ? _nameController.text.trim() : 'Rahul Patil',
+      phone: _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : '+919820012345',
+      relationship: _relationController.text.trim().isNotEmpty ? _relationController.text.trim() : 'Son',
+      alertOnScanFailures: _shareScanAlerts,
+      alertOnMissedDoses: _shareMissedDoses,
+      attachPhoto: _includePhoto,
+    );
+
+    ref.read(medicineRepositoryProvider).updateCaregiverContact(updated);
+
+    if (showSnackBar && mounted) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('✓ Caregiver contact & settings saved successfully!'),
+          backgroundColor: Color(0xFF10B981),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -80,7 +120,15 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
   @override
   Widget build(BuildContext context) {
     final repo = ref.watch(medicineRepositoryProvider);
+    final contact = repo.caregiverContact;
     final events = repo.caregiverEvents;
+
+    if (_isInitialized &&
+        (_nameController.text != contact.name ||
+            _phoneController.text != contact.phone ||
+            _relationController.text != contact.relationship)) {
+      // Sync if updated externally
+    }
 
     return PopScope(
       canPop: false,
@@ -99,6 +147,13 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
           title: const Text('Caregiver Contact & Alerts'),
           backgroundColor: const Color(0xFF1E6FE8),
           foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: () => _saveContactDetails(),
+              tooltip: 'Save Settings',
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -126,12 +181,13 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
                               child: const Icon(Icons.contact_phone, color: Color(0xFF1E6FE8), size: 32),
                             ),
                             const SizedBox(width: 16),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Primary Caregiver', style: TextStyle(fontSize: 14, color: Color(0xFF64748B))),
-                                  Text('Rahul Patil (Son)', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                  const Text('Primary Caregiver', style: TextStyle(fontSize: 14, color: Color(0xFF64748B))),
+                                  Text('${contact.name} (${contact.relationship})',
+                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
@@ -141,17 +197,20 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
                         TextField(
                           controller: _nameController,
                           decoration: const InputDecoration(labelText: 'Caregiver Name', prefixIcon: Icon(Icons.person)),
+                          onChanged: (_) => _saveContactDetails(showSnackBar: false),
                         ),
                         const SizedBox(height: 12),
                         TextField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(labelText: 'Phone Number', prefixIcon: Icon(Icons.phone)),
+                          onChanged: (_) => _saveContactDetails(showSnackBar: false),
                         ),
                         const SizedBox(height: 12),
                         TextField(
                           controller: _relationController,
                           decoration: const InputDecoration(labelText: 'Relationship', prefixIcon: Icon(Icons.family_restroom)),
+                          onChanged: (_) => _saveContactDetails(showSnackBar: false),
                         ),
                         const SizedBox(height: 16),
                         Row(
@@ -170,7 +229,7 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
                                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1E6FE8)),
                                 onPressed: () => _sendSms(
                                   _phoneController.text,
-                                  'MediSathi Alert from Mrs. Sunanda: I need assistance verifying my medicine.',
+                                  'MediSathi Alert from patient: I need assistance verifying my medicine with caregiver ${_nameController.text}.',
                                 ),
                                 icon: const Icon(Icons.message),
                                 label: const Text('Send SMS'),
@@ -201,21 +260,30 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
                           title: const Text('Alert on Repeated Scan Failures'),
                           subtitle: const Text('Auto-triggers when 2 scans fail quality check'),
                           value: _shareScanAlerts,
-                          onChanged: (val) => setState(() => _shareScanAlerts = val),
+                          onChanged: (val) {
+                            setState(() => _shareScanAlerts = val);
+                            _saveContactDetails(showSnackBar: false);
+                          },
                         ),
                         SwitchListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('Alert on Missed Doses'),
                           subtitle: const Text('Triggers if dose is unconfirmed after 30 mins'),
                           value: _shareMissedDoses,
-                          onChanged: (val) => setState(() => _shareMissedDoses = val),
+                          onChanged: (val) {
+                            setState(() => _shareMissedDoses = val);
+                            _saveContactDetails(showSnackBar: false);
+                          },
                         ),
                         SwitchListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('Attach Strip Photo in Message'),
                           subtitle: const Text('Sends picture of unverified strip'),
                           value: _includePhoto,
-                          onChanged: (val) => setState(() => _includePhoto = val),
+                          onChanged: (val) {
+                            setState(() => _includePhoto = val);
+                            _saveContactDetails(showSnackBar: false);
+                          },
                         ),
                       ],
                     ),
@@ -286,7 +354,7 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
                   onPressed: () {
                     _sendSms(
                       _phoneController.text,
-                      '🚨 MEDISATHI SOS EMERGENCY ALERT: Mrs. Sunanda Patil requires immediate medication review assistance.',
+                      '🚨 MEDISATHI SOS EMERGENCY ALERT: Patient requires immediate medication review assistance from caregiver ${_nameController.text}.',
                     );
                   },
                   icon: const Icon(Icons.send, size: 24),
@@ -300,3 +368,4 @@ class _CaregiverScreenState extends ConsumerState<CaregiverScreen> {
     );
   }
 }
+
