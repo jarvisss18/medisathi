@@ -232,6 +232,7 @@ class _InteractionScreenState extends ConsumerState<InteractionScreen> {
                       border: Border.all(color: const Color(0xFFE2E8F0)),
                     ),
                     child: const Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.check_circle_outline, color: Color(0xFF10B981), size: 56),
                         SizedBox(height: 12),

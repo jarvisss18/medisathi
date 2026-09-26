@@ -273,3 +273,92 @@ class CaregiverContact {
       );
 }
 
+class AuthUser {
+  final String id;
+  final String name;
+  final String phone;
+  final String pin;
+  final String role; // "Patient" | "Caregiver"
+  final bool isAuthenticated;
+  final bool isGuest;
+  final String createdAt;
+
+  AuthUser({
+    required this.id,
+    required this.name,
+    required this.phone,
+    this.pin = '1234',
+    this.role = 'Patient',
+    this.isAuthenticated = true,
+    this.isGuest = false,
+    required this.createdAt,
+  });
+
+  AuthUser copyWith({
+    String? id,
+    String? name,
+    String? phone,
+    String? pin,
+    String? role,
+    bool? isAuthenticated,
+    bool? isGuest,
+    String? createdAt,
+  }) {
+    return AuthUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      pin: pin ?? this.pin,
+      role: role ?? this.role,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+      isGuest: isGuest ?? this.isGuest,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'phone': phone,
+        'pin': pin,
+        'role': role,
+        'isAuthenticated': isAuthenticated,
+        'isGuest': isGuest,
+        'createdAt': createdAt,
+      };
+
+  factory AuthUser.fromJson(Map<String, dynamic> json) => AuthUser(
+        id: json['id'] ?? 'USR-001',
+        name: json['name'] ?? 'Mrs. Sunanda Patil',
+        phone: json['phone'] ?? '+919820098765',
+        pin: json['pin'] ?? '1234',
+        role: json['role'] ?? 'Patient',
+        isAuthenticated: json['isAuthenticated'] ?? true,
+        isGuest: json['isGuest'] ?? false,
+        createdAt: json['createdAt'] ?? DateTime.now().toIso8601String(),
+      );
+
+  factory AuthUser.defaultDemoUser() => AuthUser(
+        id: 'USR-DEFAULT',
+        name: 'Mrs. Sunanda Patil',
+        phone: '+919820098765',
+        pin: '1234',
+        role: 'Patient',
+        isAuthenticated: true,
+        isGuest: false,
+        createdAt: DateTime.now().toIso8601String(),
+      );
+
+  factory AuthUser.guestUser() => AuthUser(
+        id: 'GUEST-001',
+        name: 'Guest User',
+        phone: '',
+        pin: '',
+        role: 'Guest',
+        isAuthenticated: true,
+        isGuest: true,
+        createdAt: DateTime.now().toIso8601String(),
+      );
+}
+
+

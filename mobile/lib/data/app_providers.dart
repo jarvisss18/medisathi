@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'medicine_repository.dart';
+import 'auth_repository.dart';
 import 'models.dart';
 import '../core/voice/tts_service.dart';
 import '../core/gate/confidence_gate.dart';
@@ -13,6 +14,32 @@ final medicineRepositoryProvider = Provider<MedicineRepository>((ref) {
   repo.init();
   return repo;
 });
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final auth = AuthRepository();
+  auth.init();
+  return auth;
+});
+
+class CurrentUserNotifier extends Notifier<AuthUser?> {
+  @override
+  AuthUser? build() {
+    final auth = ref.watch(authRepositoryProvider);
+    void listener() {
+      state = auth.currentUser;
+    }
+    auth.addListener(listener);
+    ref.onDispose(() => auth.removeListener(listener));
+    return auth.currentUser;
+  }
+
+  void logout() {
+    ref.read(authRepositoryProvider).logout();
+  }
+}
+
+final currentUserProvider = NotifierProvider<CurrentUserNotifier, AuthUser?>(CurrentUserNotifier.new);
+
 
 class SavedMedicinesNotifier extends Notifier<List<SavedMedicine>> {
   @override

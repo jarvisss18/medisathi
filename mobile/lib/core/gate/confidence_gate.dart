@@ -105,6 +105,19 @@ class ConfidenceGate {
     double maxMatchScore = 0.0;
     bool hasStrengthMatch = false;
 
+    // Common non-drug packaging tokens to filter out from partial matching
+    const nonDrugTokens = {
+      'tab', 'tabs', 'cap', 'caps', 'mg', 'ml', 'g', 'mcg', 'iu',
+      'mfg', 'exp', 'batch', 'ltd', 'pvt', 'co', 'strip', 'blister',
+      'tablets', 'capsules', 'use', 'for', 'box', 'rx', 'only', 'keep',
+      'out', 'reach', 'children', 'store', 'dry', 'place', 'cool',
+      'pan', 'net', 'qty', 'pack', 'dose', 'doses', 'dr', 'mr', 'mrs',
+      'inc', 'corp', 'pharma', 'lab', 'labs', 'healthcare', 'care',
+      'life', 'sciences', 'std', 'date', 'mrp', 'incl', 'taxes',
+      'warning', 'caution', 'schedule', 'prescription', 'drug',
+      'medicine', 'medicines', 'syrup', 'injection', 'cream', 'gel'
+    };
+
     for (final med in medicinesCatalog) {
       final canonical = (med['canonical_name'] as String).toLowerCase();
       final brand = (med['brand_name'] as String? ?? '').toLowerCase();
@@ -142,7 +155,7 @@ class ConfidenceGate {
       // 3. OCR keywords matching
       if (!nameMatched) {
         for (final kw in ocrKeywords) {
-          if (kw.length >= 3 && rawTextLower.contains(kw)) {
+          if (kw.length >= 3 && !nonDrugTokens.contains(kw) && rawTextLower.contains(kw)) {
             nameMatched = true;
             nameScore = 0.85;
             break;
@@ -150,20 +163,22 @@ class ConfidenceGate {
         }
       }
 
-      // 4. Token-level partial match (tokens >= 3 chars)
+      // 4. Token-level match (tokens >= 4 chars, not in non-drug tokens list)
       if (!nameMatched) {
         for (final token in ocrResult.tokens) {
           final t = token.toLowerCase();
-          if (t.length >= 3) {
-            if (canonical.contains(t) || t.contains(canonical) || (brand.isNotEmpty && (brand.contains(t) || t.contains(brand)))) {
+          if (t.length >= 4 && !nonDrugTokens.contains(t)) {
+            final bool isPrefix = (canonical.length >= 5 && canonical.startsWith(t)) ||
+                (brand.isNotEmpty && brand.length >= 5 && brand.startsWith(t));
+            if (isPrefix || _isFuzzyMatch(t, canonical, minSim: 0.82) || (brand.isNotEmpty && _isFuzzyMatch(t, brand, minSim: 0.82))) {
               nameMatched = true;
-              nameScore = 0.75;
+              nameScore = 0.80;
               break;
             }
             for (final alias in aliases) {
-              if (alias.length >= 3 && (alias.contains(t) || t.contains(alias))) {
+              if (alias.length >= 4 && ((alias.length >= 5 && alias.startsWith(t)) || _isFuzzyMatch(t, alias, minSim: 0.82))) {
                 nameMatched = true;
-                nameScore = 0.70;
+                nameScore = 0.75;
                 break;
               }
             }
@@ -176,14 +191,14 @@ class ConfidenceGate {
       if (!nameMatched) {
         for (final token in ocrResult.tokens) {
           final t = token.toLowerCase();
-          if (t.length >= 4) {
-            if (_similarityScore(t, canonical) >= 0.75 || (brand.isNotEmpty && _similarityScore(t, brand) >= 0.75)) {
+          if (t.length >= 4 && !nonDrugTokens.contains(t)) {
+            if (_isFuzzyMatch(t, canonical, minSim: 0.85) || (brand.isNotEmpty && _isFuzzyMatch(t, brand, minSim: 0.85))) {
               nameMatched = true;
               nameScore = 0.80;
               break;
             }
             for (final alias in aliases) {
-              if (alias.length >= 4 && _similarityScore(t, alias) >= 0.75) {
+              if (alias.length >= 4 && _isFuzzyMatch(t, alias, minSim: 0.85)) {
                 nameMatched = true;
                 nameScore = 0.75;
                 break;
@@ -226,9 +241,6 @@ class ConfidenceGate {
         }
       }
 
-      // Total score: name quality + strength bonus
-      // A name-only match scores min 0.75 (or 0.80/0.95/1.0).
-      // A name+strength match adds 0.20-0.30 -> verified match
       final totalScore = nameScore + strScore;
 
       if (totalScore > maxMatchScore) {
@@ -240,14 +252,14 @@ class ConfidenceGate {
 
     maxMatchScore = maxMatchScore.clamp(0.0, 1.0);
 
-    if (bestCandidate == null) {
+    if (bestCandidate == null || maxMatchScore < 0.70) {
       return VerificationDecision(
         state: GateDecisionState.reject,
-        confidenceScore: 0.20,
+        confidenceScore: 0.0,
         reasonCode: "NO_MATCH_FOUND",
-        userMessageEn: "Medicine strip unrecognized. Please verify with caregiver or pharmacist.",
-        userMessageHi: "दवा की पट्टी पहचानी नहीं गई। कृपया डॉक्टर या फार्मासिस्ट से जांच करवाएं।",
-        userMessageMr: "औषधाची पट्टी ओळखली गेली नाही. कृपया डॉक्टर किंवा फार्मसिस्टकडून तपासा.",
+        userMessageEn: "Unrecognized packaging. No matching medicine strip detected.",
+        userMessageHi: "पहचाना नहीं गया। डेटाबेस में कोई मिलान वाली दवा नहीं मिली।",
+        userMessageMr: "ओळखले नाही. डेटाबेसमध्ये कोणतेही जुळणारे औषध आढळले नाही.",
         qualityResult: qualityResult,
         ocrResult: ocrResult,
       );
@@ -323,6 +335,12 @@ class ConfidenceGate {
         ocrResult: ocrResult,
       );
     }
+  }
+
+  bool _isFuzzyMatch(String token, String target, {double minSim = 0.82}) {
+    if (token.isEmpty || target.isEmpty) return false;
+    if ((token.length - target.length).abs() > 2) return false;
+    return _similarityScore(token, target) >= minSim;
   }
 
   double _similarityScore(String s1, String s2) {

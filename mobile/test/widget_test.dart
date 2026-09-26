@@ -1,16 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medisathi/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:medisathi/features/splash/splash_screen.dart';
 
 void main() {
-  testWidgets('MediSathiApp loads splash screen', (WidgetTester tester) async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('SplashScreen loads correctly', (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues({});
+
     await tester.pumpWidget(
       const ProviderScope(
-        child: MediSathiApp(),
+        child: MaterialApp(
+          home: SplashScreen(),
+        ),
       ),
     );
-    await tester.pump();
-    expect(find.text('MediSathi'), findsWidgets);
+    expect(find.text('MediSathi'), findsOneWidget);
     await tester.pump(const Duration(seconds: 3));
   });
 }
+
+
+
+
+
+
+
+
+

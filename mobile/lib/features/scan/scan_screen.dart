@@ -93,13 +93,24 @@ class _ScanScreenState extends State<ScanScreen> {
     if (_burstController.isCapturing) return;
 
     if (_cameraController != null && _cameraController!.value.isInitialized) {
-      final result = await _burstController.captureBurst(_cameraController!);
-      if (result.isComplete && mounted) {
-        context.push('/verification', extra: {
-          'frames': result.frames.map((f) => f.path).toList(),
-          'source': 'camera',
-          'mode': _getScanMode(),
-        });
+      try {
+        final XFile image = await _cameraController!.takePicture();
+        if (mounted) {
+          context.push('/verification', extra: {
+            'image_path': image.path,
+            'source': 'camera',
+            'mode': _getScanMode(),
+          });
+        }
+      } catch (_) {
+        final result = await _burstController.captureBurst(_cameraController!);
+        if (result.isComplete && result.frames.isNotEmpty && mounted) {
+          context.push('/verification', extra: {
+            'frames': result.frames.map((f) => f.path).toList(),
+            'source': 'camera',
+            'mode': _getScanMode(),
+          });
+        }
       }
     } else {
       _pickImageFromGallery();

@@ -39,25 +39,22 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
         (manualText != null && manualText.isNotEmpty) ||
         (demoId != null && demoId.isNotEmpty);
 
-    if (!hasInput) {
-      final activeDecision = ref.read(activeVerificationDecisionProvider);
-      if (activeDecision != null) {
-        setState(() {
-          _decision = activeDecision;
-          _isLoading = false;
-        });
-        _handleTtsAndEscalation(activeDecision);
-        return;
-      }
-    }
-
     final repo = ref.read(medicineRepositoryProvider);
     final gate = ConfidenceGate(matchAcceptMin: 0.85, reviewMin: 0.60);
     final ocrEngine = OcrEngine();
 
     late VerificationDecision decision;
 
-    if (imagePath != null) {
+    if (!hasInput) {
+      decision = VerificationDecision(
+        state: GateDecisionState.reject,
+        confidenceScore: 0.0,
+        reasonCode: "NO_IMAGE_CAPTURED",
+        userMessageEn: "No image could be read from camera. Please hold steady and try scanning again.",
+        userMessageHi: "कैमरे से कोई चित्र नहीं लिया जा सका। कृपया हाथ स्थिर रखकर दोबारा स्कैन करें।",
+        userMessageMr: "कॅमेऱ्यातून कोणताही फोटो घेतला गेला नाही. कृपया स्थिर धरून पुन्हा स्कॅन करा.",
+      );
+    } else if (imagePath != null) {
       // Real OCR from single device image / gallery photo
       final ocrResult = await ocrEngine.processImageFile(imagePath);
       final quality = QualityCheckResult(
@@ -504,8 +501,8 @@ class _VerificationResultScreenState extends ConsumerState<VerificationResultScr
           backgroundColor: appBarColor,
           foregroundColor: Colors.white,
         ),
-        body: SingleChildScrollView(
-          child: Padding(
+        body: SafeArea(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

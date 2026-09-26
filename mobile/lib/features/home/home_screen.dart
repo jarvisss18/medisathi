@@ -37,6 +37,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final takenCount = repo.doseLogs.where((l) => l.status == DoseStatus.taken).length;
     final totalCount = activeReminders.length;
 
+    final currentUser = ref.watch(currentUserProvider);
+    final userName = currentUser?.name ?? 'Mrs. Sunanda';
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -60,10 +63,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               icon: const Icon(Icons.volume_up, size: 30, color: Color(0xFF1E6FE8)),
               onPressed: () {
                 final message = currentLang == 'hi'
-                    ? 'नमस्ते सुनंदा जी! मेडीसाथी में आपका स्वागत है।'
+                    ? 'नमस्ते $userName जी! मेडीसाथी में आपका स्वागत है।'
                     : currentLang == 'mr'
-                        ? 'नमस्ते सुनंदा जी! मेडीसाथी मध्ये तुमचे स्वागत आहे.'
-                        : 'Welcome to MediSathi. Tap scan medicine to verify your strip.';
+                        ? 'नमस्ते $userName जी! मेडीसाथी मध्ये तुमचे स्वागत आहे.'
+                        : 'Welcome $userName to MediSathi. Tap scan medicine to verify your strip.';
                 tts.speak(message, langCode: currentLang);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Reading Aloud: $message')),
@@ -98,17 +101,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      currentLang == 'hi'
-                          ? 'नमस्ते, सुनंदा जी!'
-                          : currentLang == 'mr'
-                              ? 'नमस्ते, सुनंदा जी!'
-                              : 'Namaste, Mrs. Sunanda!',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            currentLang == 'hi'
+                                ? 'नमस्ते, $userName जी!'
+                                : currentLang == 'mr'
+                                    ? 'नमस्ते, $userName जी!'
+                                    : 'Namaste, $userName!',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        if (currentUser?.isGuest == true)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF59E0B),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text('GUEST', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                          )
+                        else
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF10B981),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              currentUser?.role ?? 'Patient',
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 6),
                     Text(
@@ -210,26 +240,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             final r = activeReminders[index];
                             final isLoggedTaken = repo.doseLogs.any((l) => l.reminderId == r.id && l.status == DoseStatus.taken);
 
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              onTap: () {
-                                ReminderRingingDialog.show(context, r);
-                              },
-                              leading: CircleAvatar(
-                                backgroundColor: isLoggedTaken ? const Color(0xFFD1FAE5) : const Color(0xFFDBEAFE),
-                                child: Icon(
-                                  isLoggedTaken ? Icons.check_circle : Icons.notifications_active_rounded,
-                                  color: isLoggedTaken ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
-                                ),
-                              ),
-                              title: Text(
-                                r.medicineName,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                              ),
-                              subtitle: Text('Due at ${r.timeOfDay} • ${r.doseText}'),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6.0),
+                              child: Row(
                                 children: [
+                                  CircleAvatar(
+                                    backgroundColor: isLoggedTaken ? const Color(0xFFD1FAE5) : const Color(0xFFDBEAFE),
+                                    child: Icon(
+                                      isLoggedTaken ? Icons.check_circle : Icons.notifications_active_rounded,
+                                      color: isLoggedTaken ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () => ReminderRingingDialog.show(context, r),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            r.medicineName,
+                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                          ),
+                                          Text(
+                                            'Due at ${r.timeOfDay} • ${r.doseText}',
+                                            style: const TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                   IconButton(
                                     icon: const Icon(Icons.notifications_active_rounded, color: Color(0xFFF59E0B)),
                                     onPressed: () {
@@ -239,7 +279,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      minimumSize: const Size(70, 38),
+                                      minimumSize: const Size(60, 36),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
                                       backgroundColor: isLoggedTaken ? const Color(0xFF64748B) : const Color(0xFF10B981),
                                     ),
                                     onPressed: () {
@@ -294,9 +335,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             setState(() {
               _currentIndex = index;
             });
-            if (index == 1) context.push('/my-medicines');
-            if (index == 2) context.push('/reminders');
-            if (index == 3) context.push('/settings');
+            if (index == 1) {
+              context.push('/my-medicines');
+            }
+            if (index == 2) {
+              context.push('/reminders');
+            }
+            if (index == 3) {
+              context.push('/settings');
+            }
           },
           destinations: const [
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
@@ -328,6 +375,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
               radius: 32,

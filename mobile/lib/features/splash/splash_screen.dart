@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SplashScreen extends StatefulWidget {
+import '../../data/app_providers.dart';
+
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   Timer? _timer;
 
   @override
@@ -17,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _timer = Timer(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go('/home');
+        try {
+          context.go('/home');
+        } catch (_) {}
       }
     });
   }
@@ -34,48 +39,48 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.health_and_safety,
-                size: 96,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'MediSathi',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.health_and_safety,
+                  size: 80,
                   color: Colors.white,
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Right Medicine. Safe You.',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white70,
-                ),
-              ),
-              const SizedBox(height: 48),
-              const CircularProgressIndicator(
-                color: Colors.white,
-              ),
-              const Spacer(),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Your AI companion for safe and correct medicine usage.',
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 16),
+                const Text(
+                  'MediSathi',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Right Medicine. Safe You.',
+                  style: TextStyle(
+                    fontSize: 18,
                     color: Colors.white70,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 24),
+                const CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Your AI companion for safe and correct medicine usage.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

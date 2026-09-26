@@ -44,6 +44,92 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // User Profile & Account Card
+                Consumer(
+                  builder: (context, ref, child) {
+                    final currentUser = ref.watch(currentUserProvider);
+                    final userName = currentUser?.name ?? 'Mrs. Sunanda Patil';
+                    final phone = currentUser?.phone.isNotEmpty == true ? currentUser!.phone : 'Guest Mode';
+                    final role = currentUser?.role ?? 'Patient';
+                    final isGuest = currentUser?.isGuest == true;
+
+                    return Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      color: const Color(0xFFEFF6FF),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 26,
+                                  backgroundColor: const Color(0xFF1E6FE8),
+                                  child: Text(
+                                    userName.isNotEmpty ? userName[0].toUpperCase() : 'U',
+                                    style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        userName,
+                                        style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Color(0xFF1E3A8A)),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        phone,
+                                        style: const TextStyle(fontSize: 14, color: Color(0xFF475569)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isGuest ? const Color(0xFFF59E0B) : const Color(0xFF10B981),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    role.toUpperCase(),
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(height: 24),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFEF4444),
+                                minimumSize: const Size.fromHeight(44),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              ),
+                              onPressed: () async {
+                                await ref.read(authRepositoryProvider).init();
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Profile reset to default Sunanda Patil')),
+                                  );
+                                  context.go('/home');
+                                }
+                              },
+                              icon: const Icon(Icons.logout),
+                              label: const Text('LOG OUT / SWITCH USER', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
                 // Language Selection Card
                 Card(
                   elevation: 2,
